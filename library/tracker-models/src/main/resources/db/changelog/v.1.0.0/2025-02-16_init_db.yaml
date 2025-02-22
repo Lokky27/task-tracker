@@ -1,0 +1,304 @@
+databaseChangeLog:
+  - changeSet:
+      id: add_task_table
+      author: v.lokky
+      changes:
+        - createTable:
+              tableName: users
+              schemaName: task_tracker
+              remarks: "Пользователи"
+              columns:
+                - column:
+                    name: user_id
+                    type: uuid
+                    remarks: "ID пользователя"
+                    defaultValueComputed: gen_random_uuid()
+                    constraints:
+                      primaryKey: true
+                      nullable: false
+                      primaryKeyName: users_pk
+                - column:
+                    name: email
+                    type: varchar(100)
+                    remarks: "Электронная почта"
+                    constraints:
+                      nullable: false
+                      unique: true
+                - column:
+                    name: first_name
+                    type: varchar(50)
+                    remarks: "Имя"
+                    constraints:
+                      nullable: false
+                - column:
+                    name: surname
+                    type: varchar(100)
+                    remarks: "Фамилия"
+                    constraints:
+                      nullable: false
+                - column:
+                    name: middle_name
+                    type: varchar(100)
+                    remarks: "Отчество"
+                - column:
+                    name: password
+                    type: varchar(255)
+                    remarks: "Пароль"
+                    constraints:
+                      nullable: false
+                - column:
+                    name: role
+                    type: int
+                    remarks: "Роль"
+                    constraints:
+                      nullable: false
+                      checkConstraint: "role IN (1, 2, 3)"
+                - column:
+                    name: is_active
+                    type: boolean
+                    remarks: "Активен ли пользователь"
+                    defaultValue: true
+                    constraints:
+                      nullable: false
+                - column:
+                    name: created_at
+                    type: timestamp
+                    remarks: "Дата создания"
+                    defaultValueComputed: now()
+                    constraints:
+                      nullable: false
+                - column:
+                    name: updated_at
+                    type: timestamp
+                    remarks: "Дата обновления"
+                    defaultValueComputed: now()
+                    constraints:
+                      nullable: false
+        - createTable:
+            tableName: project
+            schemaName: task_tracker
+            remarks: "Проекты"
+            columns:
+              - column:
+                  name: project_id
+                  type: uuid
+                  remarks: "ID проекта"
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: project_pk
+              - column:
+                  name: name
+                  type: varchar(50)
+                  remarks: "Название проекта"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: text
+                  remarks: "Описание проекта"
+              - column:
+                  name: status_code
+                  type: int
+                  remarks: "Статус проекта"
+                  constraints:
+                    nullable: false
+                    checkConstraint: "status_code IN (1, 2, 3, 4)"
+              - column:
+                  name: owner_id
+                  type: uuid
+                  remarks: "Владелец проекта"
+                  constraints:
+                    foreignKeyName: fk_project_owner
+                    referencedTableName: users
+                    referencedColumnNames: user_id
+              - column:
+                  name: created_at
+                  type: timestamp
+                  remarks: "Дата создания"
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  remarks: "Дата обновления"
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: task
+            schemaName: task_tracker
+            remarks: "Задачи"
+            columns:
+              - column:
+                  name: task_id
+                  type: uuid
+                  remarks: "ID задачи"
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: task_pk
+              - column:
+                  name: title
+                  type: varchar
+                  remarks: "Заголовок задачи"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: text
+                  remarks: "Описание задачи"
+              - column:
+                  name: deadline
+                  type: timestamp
+                  remarks: "Дедлайн"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status_code
+                  type: int
+                  remarks: "Статус задачи"
+                  constraints:
+                    nullable: false
+                    checkConstraint: "status_code IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)"
+              - column:
+                  name: project_id
+                  type: uuid
+                  remarks: "Проект"
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_task_project
+                    referencedTableName: project
+                    referencedColumnNames: project_id
+                    deleteCascade: true
+              - column:
+                  name: assignee_id
+                  type: uuid
+                  remarks: "Исполнитель"
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_task_assignee
+                    referencedTableName: users
+                    referencedColumnNames: user_id
+              - column:
+                  name: created_by
+                  type: uuid
+                  remarks: "Создатель"
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_task_creator
+                    referencedTableName: users
+                    referencedColumnNames: user_id
+              - column:
+                  name: created_at
+                  type: timestamp
+                  remarks: "Дата создания"
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_by
+                  type: uuid
+                  remarks: "Кем обновлено"
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_task_updater
+                    referencedTableName: users
+                    referencedColumnNames: user_id
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  remarks: "Дата обновления"
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: project_members
+            schemaName: task_tracker
+            remarks: "Участники проекта"
+            columns:
+              - column:
+                  name: project_id
+                  type: uuid
+                  remarks: "ID Проекта"
+                  constraints:
+                    foreignKeyName: fk_project_members_project
+                    referencedTableName: project
+                    referencedColumnNames: project_id
+
+              - column:
+                  type: uuid
+                  name: user_id
+                  remarks: "ID Пользователя"
+                  constraints:
+                    foreignKeyName: fk_project_members_user
+                    referencedTableName: users
+                    referencedColumnNames: user_id
+          addPrimaryKey:
+            tableName: project_members
+            schemaName: task_tracker
+            columnNames: project_id, user_id
+            constraintName: project_members_pk
+
+        - createTable:
+            tableName: user_history
+            schemaName: task_tracker
+            remarks: "История изменений пользователей"
+            columns:
+              - column:
+                  name: history_id
+                  type: uuid
+                  remarks: "ID истории"
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: user_history_pk
+              - column:
+                  name: user_id
+                  type: uuid
+                  remarks: "ID пользователя"
+                  constraints:
+                    foreignKeyName: fk_user_history_user
+                    referencedTableName: users
+                    referencedColumnNames: user_id
+              - column:
+                  name: change_field
+                  type: varchar(100)
+                  remarks: "Поле, которое изменилось"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: old_value
+                  type: text
+                  remarks: "Старое значение"
+              - column:
+                  name: new_value
+                  type: text
+                  remarks: "Новое значение"
+              - column:
+                  name: changed_by
+                  type: uuid
+                  remarks: "Кем изменилось"
+                  constraints:
+                    foreignKeyName: fk_user_history_changed_by
+                    referencedTableName: users
+                    referencedColumnNames: user_id
+              - column:
+                  name: changed_at
+                  type: timestamp
+                  remarks: "Дата изменения"
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+        - sql:
+            dbms: postgresql
+            splitStatements: true
+            stripComments: true
+            sql: "ALTER TABLE task ADD CONSTRAINT status_code_check CHECK (status_code IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10));"
+
+
