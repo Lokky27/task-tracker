@@ -1,3 +1,5 @@
 databaseChangeLog:
     - include:
         file: db/changelog/v.1.0.0/2025-02-16_init_db.yaml
+    - include:
+          file: db/changelog/v.1.0.0/2025-03-08_add_subtasks_to_tasks.yaml

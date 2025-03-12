@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2025-03-08_add_subtasks_to_tasks
+      author: v.laktyushin
+      changes:
+        - addColumn:
+            tableName: task
+            schemaName: task_tracker
+            columns:
+              - column:
+                  name: parent_task_id
+                  type: uuid
+                  remarks: "ID родительской задачи"
+                  constraints:
+                    foreignKeyName: fk_task_parent_task
+                    referencedTableName: task
+                    referencedColumnNames: task_id
+                    deleteCascade: true
+              - column:
+                  name: task_type_code
+                  type: int
+                  remarks: "Тип задачи"
