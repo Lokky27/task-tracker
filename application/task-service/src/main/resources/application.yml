@@ -12,3 +12,9 @@ spring:
     driver-class-name: org.postgresql.Driver
     jpa:
       show-sql: true
+
+  liquibase:
+    enabled: false
+logging:
+  level:
+    liquibase: DEBUG
