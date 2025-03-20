@@ -1,11 +1,19 @@
-package ru.srfholding.trackermodels.project;
+package ru.srfholding.trackermodels.model;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+
+import static lombok.AccessLevel.NONE;
 
 /**
  * Сущность Проекта
@@ -21,6 +29,7 @@ public class ProjectEntity {
     @Id
     @GeneratedValue(generator = "UUID")
     @Column(name = "project_id", updatable = false, nullable = false)
+    @Setter(NONE)
     private UUID projectId;
     /**
      * Название проекта
@@ -37,18 +46,29 @@ public class ProjectEntity {
     @Column(name = "status_code")
     private Integer statusCode;
     /**
-     * ID владельца проекта
+     * Владелец проекта
      */
-    @Column(name = "owner_id", insertable = false, updatable = false)
-    private UUID ownerId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id", referencedColumnName = "user_id")
+    @ToString.Exclude
+    private UserEntity owner;
     /**
      * Дата создания
      */
-    @Column(name = "created_at", insertable = false, updatable = false)
+    @CreationTimestamp
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
     /**
      * Дата обновления
      */
-    @Column(name = "updated_at", insertable = false, updatable = false)
+    @UpdateTimestamp
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+    /**
+     * Список задач проекта
+     */
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    private List<TaskEntity> tasks = new ArrayList<>();
 }

@@ -40,4 +40,8 @@ public class CreateTaskRequestDto {
      * Назначить на
      */
     UUID assigneeId;
+    /**
+     * Проект
+     */
+    UUID projectId;
 }
