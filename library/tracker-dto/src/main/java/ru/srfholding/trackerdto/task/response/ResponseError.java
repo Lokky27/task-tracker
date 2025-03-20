@@ -6,33 +6,23 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import java.util.List;
-
 import static lombok.AccessLevel.PRIVATE;
 
 /**
- * Ответ на запрос получения задачи
+ * Ошибки ответа
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = PRIVATE)
-public class GetTaskResponseDto {
+public class ResponseError {
     /**
-     * Статус
+     * Код ошибки
      */
-    Integer statusCode;
+    String errorCode;
     /**
-     * Ответ успешен да/нет
+     * Описание ошибки
      */
-    Boolean success;
-    /**
-     * Результат
-     */
-    Result result;
-    /**
-     * Ошибки
-     */
-    List<ResponseError> errors;
+    String errorDescription;
 }

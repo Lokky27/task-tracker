@@ -1,15 +1,18 @@
-package ru.srfholding.trackermodels.task;
+package ru.srfholding.trackermodels.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import ru.srfholding.trackermodels.project.ProjectEntity;
-import ru.srfholding.trackermodels.user.UserEntity;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import static lombok.AccessLevel.NONE;
 
 /**
  * Сущность задачи
@@ -25,6 +28,7 @@ public class TaskEntity {
     @Id
     @GeneratedValue(generator = "UUID")
     @Column(name = "task_id", updatable = false, nullable = false)
+    @Setter(NONE)
     private UUID taskId;
     /**
      * Заголовок задачи
@@ -47,52 +51,41 @@ public class TaskEntity {
     @Column(name = "status_code")
     private Integer statusCode;
     /**
-     * ID проекта
-     */
-    @Column(name = "project_id", insertable = false, updatable = false)
-    private UUID projectId;
-    /**
      * Проект
      */
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id", referencedColumnName = "project_id")
     private ProjectEntity project;
     /**
-     * ID исполнителя
+     * Исполнитель
      */
-    @Column(name = "assignee_id", insertable = false, updatable = false)
-    private UUID assigneeId;
-    /**Исполнитель*/
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "assignee_id", referencedColumnName = "user_id")
     private UserEntity assignee;
-    /**
-     * ID создателя
-     */
-    @Column(name = "created_by", insertable = false, updatable = false)
-    private UUID createdBy;
     /**
      * Создатель
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    private UserEntity creator;
+    @JoinColumn(name = "created_by", referencedColumnName = "user_id")
+    private UserEntity createdBy;
     /**
      * Дата создания
      */
+    @CreationTimestamp
     @Column(name = "created_at")
     private OffsetDateTime createdAt;
-    /**
-     * ID пользователя, который обновил
-     */
-    @Column(name = "updated_by")
-    private UUID updatedBy;
     /**
      * Обновил
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    private UserEntity updater;
+    @JoinColumn(name = "updated_by")
+    private UserEntity updatedBy;
     /**
      * Дата обновления
      */
+    @UpdateTimestamp
     @Column(name = "updated_at")
+    @Setter(NONE)
     private OffsetDateTime updatedAt;
     /**
      * ID задачи родителя
@@ -103,6 +96,7 @@ public class TaskEntity {
      * Родительская задача
      */
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_task_id")
     private TaskEntity parentTask;
     /**
      * Подзадачи
@@ -112,7 +106,7 @@ public class TaskEntity {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<TaskEntity> subTasks;
+    private List<TaskEntity> subTasks = new ArrayList<>();
     /**
      * Тип задачи
      */

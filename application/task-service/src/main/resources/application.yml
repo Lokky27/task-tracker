@@ -10,11 +10,17 @@ spring:
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
-    jpa:
-      show-sql: true
+    hikari:
+      schema: task_tracker
+  jpa:
+    show-sql: true
+
 
   liquibase:
     enabled: false
+
+  main:
+    allow-bean-definition-overriding: true
 logging:
   level:
     liquibase: DEBUG
