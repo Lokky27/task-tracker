@@ -23,7 +23,7 @@ import static lombok.AccessLevel.NONE;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "users")
+@Table(name = "users", schema = "task_tracker")
 public class UserEntity {
     /**
      * ID пользователя

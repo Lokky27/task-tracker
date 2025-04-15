@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2025-02-14_create_schema_postgres
+      author: v.laktyushin
+      changes:
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            sql: CREATE SCHEMA IF NOT EXISTS task_tracker;

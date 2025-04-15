@@ -5,6 +5,12 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import ru.srfholding.trackermodels.converter.PriorityConverter;
+import ru.srfholding.trackermodels.converter.TaskStatusConverter;
+import ru.srfholding.trackermodels.converter.TaskTypeConverter;
+import ru.srfholding.trackermodels.converter.constant.PriorityType;
+import ru.srfholding.trackermodels.converter.constant.StatusType;
+import ru.srfholding.trackermodels.converter.constant.TaskType;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -18,7 +24,7 @@ import static lombok.AccessLevel.NONE;
  * Сущность задачи
  */
 @Entity
-@Table(name = "task")
+@Table(name = "task", schema = "task_tracker")
 @Getter
 @Setter
 public class TaskEntity {
@@ -49,7 +55,8 @@ public class TaskEntity {
      * Статус задачи
      */
     @Column(name = "status_code")
-    private Integer statusCode;
+    @Convert(converter = TaskStatusConverter.class)
+    private StatusType statusCode;
     /**
      * Проект
      */
@@ -88,11 +95,6 @@ public class TaskEntity {
     @Setter(NONE)
     private OffsetDateTime updatedAt;
     /**
-     * ID задачи родителя
-     */
-    @Column(name = "parent_task_id", insertable = false, updatable = false)
-    private UUID parentTaskId;
-    /**
      * Родительская задача
      */
     @ManyToOne(fetch = FetchType.LAZY)
@@ -111,5 +113,12 @@ public class TaskEntity {
      * Тип задачи
      */
     @Column(name = "task_type_code")
-    private Integer taskTypeCode;
+    @Convert(converter = TaskTypeConverter.class)
+    private TaskType taskTypeCode;
+    /**
+     * Приоритет
+     */
+    @Column(name = "priority")
+    @Convert(converter = PriorityConverter.class)
+    private PriorityType priority;
 }

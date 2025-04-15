@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import ru.srfholding.trackermodels.converter.constant.PriorityType;
+import ru.srfholding.trackermodels.converter.constant.StatusType;
+import ru.srfholding.trackermodels.converter.constant.TaskType;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -40,11 +43,15 @@ public class Result {
     /**
      * Статус задачи
      */
-    Integer statusCode;
+    StatusType statusCode;
     /**
      * Тип задачи
      */
-    Integer taskTypeCode;
+    TaskType taskTypeCode;
+    /**
+     * Приоритет
+     */
+    PriorityType priority;
     /**
      * Проект к которому принадлежит задача
      */
