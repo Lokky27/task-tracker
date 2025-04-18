@@ -1,6 +1,8 @@
 package ru.srfholding.service;
 
+import ru.srfholding.trackerdto.task.ChangeStatusTaskRequest;
 import ru.srfholding.trackerdto.task.CreateTaskRequestDto;
+import ru.srfholding.trackerdto.task.response.ChangeStatusTaskResponse;
 import ru.srfholding.trackerdto.task.response.GetTaskListResponseDto;
 import ru.srfholding.trackerdto.task.response.GetTaskResponseDto;
 
@@ -30,4 +32,12 @@ public interface TaskService {
      * @return - список задач
      */
     GetTaskListResponseDto getTasks();
+
+    /**
+     * Смена статуса задачи
+     * @param taskId - ID задачи
+     * @param changeStatusTaskRequest - запрос смены статуса
+     * @return ответ смены статуса
+     */
+    ChangeStatusTaskResponse changeTaskStatus(UUID taskId, ChangeStatusTaskRequest changeStatusTaskRequest);
 }

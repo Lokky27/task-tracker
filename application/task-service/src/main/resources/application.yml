@@ -21,6 +21,7 @@ spring:
 
   main:
     allow-bean-definition-overriding: true
+
 logging:
   level:
     liquibase: DEBUG

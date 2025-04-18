@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import ru.srfholding.trackermodels.converter.constant.TaskType;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -27,7 +28,7 @@ public class CreateTaskRequestDto {
     /**
      * Тип задачи
      */
-    Integer type;
+    TaskType type;
     /**
      * Описание задачи
      */

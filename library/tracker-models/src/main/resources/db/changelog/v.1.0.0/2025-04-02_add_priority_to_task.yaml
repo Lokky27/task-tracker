@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2025-04-02_add_priority_to_task
+      author: v.laktyushin
+      changes:
+        - addColumn:
+            schemaName: task_tracker
+            tableName: task
+            columns:
+              - column:
+                  name: priority
+                  type: int

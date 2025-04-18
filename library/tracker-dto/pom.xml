@@ -21,6 +21,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>ru.srfholding</groupId>
+            <artifactId>tracker-models</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>

@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.time.Instant;
+
 import static lombok.AccessLevel.PRIVATE;
 
 /**
@@ -24,5 +26,13 @@ public class ResponseError {
     /**
      * Описание ошибки
      */
-    String errorDescription;
+    String errorMessage;
+    /**
+     * Тип ошибки
+     */
+    Integer errorType;
+    /**
+     * Время возникновения
+     */
+    Instant timestamp;
 }

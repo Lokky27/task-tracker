@@ -21,7 +21,7 @@ import static lombok.AccessLevel.NONE;
 @Getter
 @Setter
 @Entity
-@Table(name = "project")
+@Table(name = "project", schema = "task_tracker")
 public class ProjectEntity {
     /**
      * ID проекта
