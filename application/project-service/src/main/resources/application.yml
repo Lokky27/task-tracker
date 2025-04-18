@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: project-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/task_tracker_db
+    username: postgres
+    password: postgres
+    hikari:
+      schema: task_tracker
+
+  jpa:
+    show-sql: true
+
+  liquibase:
+    enabled: false
+
+  main:
+    allow-bean-definition-overriding: true
+
+logging:
+  level:
+    liquibase: DEBUG
+server:
+  port: 8081

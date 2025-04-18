@@ -26,6 +26,9 @@
         <postgres.version>42.7.5</postgres.version>
         <lombok.version>1.18.36</lombok.version>
         <mapstruct.version>1.6.3</mapstruct.version>
+        <json-smart.version>2.5.2</json-smart.version>
+        <commons-compress.version>1.27.1</commons-compress.version>
+        <owasp-check-plugin.version>9.1.0</owasp-check-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -60,6 +63,16 @@
                 <artifactId>mapstruct</artifactId>
                 <version>${mapstruct.version}</version>
             </dependency>
+            <dependency>
+                <groupId>net.minidev</groupId>
+                <artifactId>json-smart</artifactId>
+                <version>${json-smart.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-compress</artifactId>
+                <version>${commons-compress.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -91,6 +104,23 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.owasp</groupId>-->
+<!--                <artifactId>dependency-check-maven</artifactId>-->
+<!--                <version>${owasp-check-plugin.version}</version>-->
+<!--                <configuration>-->
+<!--                    <nvdApiKey>f23ad3c3-d77f-437d-b702-c4509b63b8d1</nvdApiKey>-->
+<!--                    <nvdApiDelay>6000</nvdApiDelay>-->
+<!--                    <failOnError>false</failOnError>-->
+<!--                </configuration>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <goals>-->
+<!--                            <goal>check</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 </project>
