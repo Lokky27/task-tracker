@@ -1,4 +1,4 @@
-package ru.srfholding.trackerdto.task.response;
+package ru.srfholding.trackerdto.base.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,7 +30,7 @@ public class ResponseError {
     /**
      * Тип ошибки
      */
-    Integer errorType;
+    ErrorsType errorType;
     /**
      * Время возникновения
      */

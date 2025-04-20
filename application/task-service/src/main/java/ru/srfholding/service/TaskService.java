@@ -1,11 +1,12 @@
 package ru.srfholding.service;
 
+import ru.srfholding.trackerdto.base.response.TrackerResponse;
 import ru.srfholding.trackerdto.task.ChangeStatusTaskRequest;
 import ru.srfholding.trackerdto.task.CreateTaskRequestDto;
-import ru.srfholding.trackerdto.task.response.ChangeStatusTaskResponse;
-import ru.srfholding.trackerdto.task.response.GetTaskListResponseDto;
-import ru.srfholding.trackerdto.task.response.GetTaskResponseDto;
+import ru.srfholding.trackerdto.task.response.ChangeStatusTaskBody;
+import ru.srfholding.trackerdto.task.response.TaskResult;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -18,20 +19,20 @@ public interface TaskService {
      * @param createTaskRequestDto - запрос на создание задачи
      * @return - задача
      */
-    GetTaskResponseDto createTask(CreateTaskRequestDto createTaskRequestDto);
+    TrackerResponse<TaskResult> createTask(CreateTaskRequestDto createTaskRequestDto);
 
     /**
      * Получение задачи по UUID
      * @param taskId - UUID задачи
      * @return - задача
      */
-    GetTaskResponseDto getTaskById(UUID taskId);
+    TrackerResponse<TaskResult> getTaskById(UUID taskId);
 
     /**
      * Получение списка задач
      * @return - список задач
      */
-    GetTaskListResponseDto getTasks();
+    List<TrackerResponse<TaskResult>> getTasks();
 
     /**
      * Смена статуса задачи
@@ -39,5 +40,5 @@ public interface TaskService {
      * @param changeStatusTaskRequest - запрос смены статуса
      * @return ответ смены статуса
      */
-    ChangeStatusTaskResponse changeTaskStatus(UUID taskId, ChangeStatusTaskRequest changeStatusTaskRequest);
+    TrackerResponse<ChangeStatusTaskBody> changeTaskStatus(UUID taskId, ChangeStatusTaskRequest changeStatusTaskRequest);
 }

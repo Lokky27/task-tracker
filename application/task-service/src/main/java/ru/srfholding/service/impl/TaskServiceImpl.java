@@ -7,12 +7,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.srfholding.mapper.TaskMapper;
 import ru.srfholding.service.TaskService;
+import ru.srfholding.trackerdto.base.response.ResponseError;
+import ru.srfholding.trackerdto.base.response.TrackerResponse;
 import ru.srfholding.trackerdto.task.ChangeStatusTaskRequest;
 import ru.srfholding.trackerdto.task.CreateTaskRequestDto;
-import ru.srfholding.trackerdto.task.response.ChangeStatusTaskResponse;
-import ru.srfholding.trackerdto.task.response.GetTaskListResponseDto;
+import ru.srfholding.trackerdto.task.response.ChangeStatusTaskBody;
 import ru.srfholding.trackerdto.task.response.GetTaskResponseDto;
-import ru.srfholding.trackerdto.task.response.ResponseError;
+import ru.srfholding.trackerdto.task.response.TaskResult;
 import ru.srfholding.trackermodels.model.ProjectEntity;
 import ru.srfholding.trackermodels.model.TaskEntity;
 import ru.srfholding.trackermodels.model.UserEntity;
@@ -21,10 +22,14 @@ import ru.srfholding.trackermodels.repository.TaskRepository;
 import ru.srfholding.trackermodels.repository.UserRepository;
 
 import java.time.Instant;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+import static ru.srfholding.trackerdto.base.response.ErrorsType.BUSINESS;
+import static ru.srfholding.trackerdto.base.response.ErrorsType.TECHNICAL;
+import static ru.srfholding.trackerdto.base.response.Status.ERROR;
+import static ru.srfholding.trackerdto.base.response.Status.SUCCESS;
 import static ru.srfholding.trackermodels.converter.constant.StatusType.NEW;
 
 @Service
@@ -38,7 +43,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
-    public GetTaskResponseDto createTask(CreateTaskRequestDto createTaskRequestDto) {
+    public TrackerResponse<TaskResult> createTask(CreateTaskRequestDto createTaskRequestDto) {
         GetTaskResponseDto getTaskResponseDto;
         TaskEntity taskEntity = taskMapper.mapCreateTaskRequestToEntity(createTaskRequestDto);
         taskEntity.setStatusCode(NEW);
@@ -50,13 +55,13 @@ public class TaskServiceImpl implements TaskService {
         } else {
             log.error("Проект с id {} не найден", createTaskRequestDto.getProjectId());
             getTaskResponseDto = new GetTaskResponseDto();
-            getTaskResponseDto.setSuccess(false);
-            getTaskResponseDto.setStatusCode(3);
-            getTaskResponseDto.setErrors(getErrors(
-                    "123",
-                    String.format("Проект с id %s не найден", createTaskRequestDto.getProjectId()),
-                    1
-            ));
+            getTaskResponseDto.setStatus(SUCCESS);
+            getTaskResponseDto.getErrors().add(ResponseError.builder()
+                            .errorCode("123")
+                            .errorMessage(String.format("Проект с id %s не найден", createTaskRequestDto.getProjectId()))
+                            .errorType(BUSINESS)
+                            .timestamp(Instant.now())
+                    .build());
         }
 
         UserEntity userById = userRepository.findById(createTaskRequestDto.getAssigneeId())
@@ -67,64 +72,59 @@ public class TaskServiceImpl implements TaskService {
 
         try {
             TaskEntity savedTask = taskRepository.save(taskEntity);
-            getTaskResponseDto = taskMapper.mapTaskEntityToResponse(savedTask);
+            TaskResult taskResult = taskMapper.mapResult(savedTask);
 
         } catch (Exception e) {
             log.error("При сохранении задачи возникла ошибка: {}", e.getMessage(), e);
             getTaskResponseDto = new GetTaskResponseDto();
-            getTaskResponseDto.setSuccess(false);
-            getTaskResponseDto.setResult(null);
-            getTaskResponseDto.setStatusCode(3);
-            getTaskResponseDto.setErrors(getErrors("120", e.getMessage(), 2));
+            getTaskResponseDto.setStatus(ERROR);
+            getTaskResponseDto.setTaskResult(null);
+            getTaskResponseDto.getErrors().add(ResponseError.builder()
+                            .errorCode("120")
+                            .errorMessage(e.getMessage())
+                            .errorType(TECHNICAL)
+                            .timestamp(Instant.now())
+                    .build());
         }
-
-        return getTaskResponseDto;
-    }
-
-    @Override
-    public GetTaskResponseDto getTaskById(UUID taskId) {
-        GetTaskResponseDto getTaskResponseDto = null;
-        try {
-            TaskEntity taskEntity = taskRepository.findById(taskId).orElse(null);
-            if (taskEntity != null) {
-                getTaskResponseDto = taskMapper.mapTaskEntityToResponse(taskEntity);
-                getTaskResponseDto.setStatusCode(1);
-            }
-        } catch (Exception e) {
-            log.error("При получении задачи возникла ошибка: {}", e.getMessage(), e);
-            getTaskResponseDto = new GetTaskResponseDto();
-            getTaskResponseDto.setSuccess(false);
-            getTaskResponseDto.setResult(null);
-            getTaskResponseDto.setStatusCode(3);
-            getTaskResponseDto.setErrors(getErrors("120", e.getMessage(), 1));
-        }
-        return getTaskResponseDto;
-    }
-
-    @Override
-    public GetTaskListResponseDto getTasks() {
-        List<TaskEntity> taskEntities = taskRepository.findAll();
-
-        return GetTaskListResponseDto.builder()
-                .tasks(taskMapper.mapTaskEntityListToResponseList(taskEntities))
-                .build();
-    }
-
-    @Override
-    @Transactional
-    public ChangeStatusTaskResponse changeTaskStatus(UUID taskId, ChangeStatusTaskRequest changeStatusTaskRequest) {
 
         return null;
     }
 
-    private List<ResponseError> getErrors(String errorCode, String errorMsg, Integer errorType) {
-        List<ResponseError> errors = new ArrayList<>();
-        errors.add(ResponseError.builder()
-                        .errorCode(errorCode)
-                        .errorMessage(errorMsg)
-                        .errorType(errorType)
-                        .timestamp(Instant.now())
-                .build());
-        return errors;
+    @Override
+    public TrackerResponse<TaskResult> getTaskById(UUID taskId) {
+        GetTaskResponseDto getTaskResponseDto;
+        try {
+            TaskEntity taskEntity = taskRepository.findById(taskId).orElse(null);
+            if (taskEntity != null) {
+//                getTaskResponseDto = taskMapper.mapTaskEntityToResponse(taskEntity);
+//                getTaskResponseDto.setStatus(SUCCESS);
+            }
+        } catch (Exception e) {
+//            log.error("При получении задачи возникла ошибка: {}", e.getMessage(), e);
+//            getTaskResponseDto = new GetTaskResponseDto();
+//            getTaskResponseDto.setStatus(ERROR);
+//            getTaskResponseDto.setTaskResult(null);
+//            getTaskResponseDto.getErrors().add(ResponseError.builder()
+//                            .errorCode("120")
+//                            .errorMessage(e.getMessage())
+//                            .errorType(TECHNICAL)
+//                            .timestamp(Instant.now())
+//                    .build());
+        }
+        return null;
+    }
+
+    @Override
+    public List<TrackerResponse<TaskResult>> getTasks() {
+        List<TaskEntity> taskEntities = taskRepository.findAll();
+
+        return Collections.emptyList();
+    }
+
+    @Override
+    @Transactional
+    public TrackerResponse<ChangeStatusTaskBody> changeTaskStatus(UUID taskId, ChangeStatusTaskRequest changeStatusTaskRequest) {
+
+        return null;
     }
 }

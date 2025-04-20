@@ -7,6 +7,8 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import ru.srfholding.trackermodels.converter.ProjectStatusConverter;
+import ru.srfholding.trackermodels.converter.constant.ProjectStatus;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -44,7 +46,8 @@ public class ProjectEntity {
      * Статус проекта
      */
     @Column(name = "status_code")
-    private Integer statusCode;
+    @Convert(converter = ProjectStatusConverter.class)
+    private ProjectStatus statusCode;
     /**
      * Владелец проекта
      */

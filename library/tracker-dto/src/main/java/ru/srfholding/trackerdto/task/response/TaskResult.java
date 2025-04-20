@@ -23,7 +23,7 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = PRIVATE)
-public class Result {
+public class TaskResult {
     /**
      * ID задачи
      */

@@ -1,37 +1,38 @@
-package ru.srfholding.trackerdto.task.response;
+package ru.srfholding.trackerdto.base.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import ru.srfholding.trackerdto.base.response.ResponseError;
-import ru.srfholding.trackerdto.base.response.Status;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static lombok.AccessLevel.PRIVATE;
 
-/**
- * Ответ на запрос получения задачи
- */
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@NoArgsConstructor
 @FieldDefaults(level = PRIVATE)
-public class GetTaskResponseDto {
+@Builder
+public class TrackerResponse<T> {
     /**
-     * Статус
+     * Статус выполнения запроса
      */
     Status status;
     /**
-     * Результат
-     */
-    TaskResult taskResult;
-    /**
      * Ошибки
      */
+    @Builder.Default
     List<ResponseError> errors = new ArrayList<>();
+    /**
+     * Тело ответа
+     */
+    T result;
+    /**
+     * Метадата
+     */
+    ResponseMetadata metadata;
+
 }

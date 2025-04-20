@@ -4,13 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.srfholding.service.TaskService;
+import ru.srfholding.trackerdto.base.response.TrackerResponse;
 import ru.srfholding.trackerdto.task.ChangeStatusTaskRequest;
 import ru.srfholding.trackerdto.task.CreateTaskRequestDto;
-import ru.srfholding.trackerdto.task.response.ChangeStatusTaskResponse;
-import ru.srfholding.trackerdto.task.response.GetTaskListResponseDto;
-import ru.srfholding.trackerdto.task.response.GetTaskResponseDto;
+import ru.srfholding.trackerdto.task.response.ChangeStatusTaskBody;
+import ru.srfholding.trackerdto.task.response.TaskResult;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -20,15 +21,16 @@ public class TaskController {
     private final TaskService taskService;
 
     @GetMapping
-    public ResponseEntity<GetTaskListResponseDto> getTasks() {
+    public ResponseEntity<List<TrackerResponse<TaskResult>>> getTasks(@RequestHeader("rqId") String rqUid,
+                                                                      @RequestHeader("rqTm") String rqTm) {
 
         return ResponseEntity.ok(taskService.getTasks());
     }
 
     @GetMapping("/{taskId}")
-    public ResponseEntity<GetTaskResponseDto> getTaskById(
+    public ResponseEntity<TrackerResponse<TaskResult>> getTaskById(
             @RequestHeader("rqId") String rqId,
-            @RequestHeader("rqTm") Instant timestamp,
+            @RequestHeader("rqTm") Instant rqTm,
             @PathVariable UUID taskId
     ) {
 
@@ -36,14 +38,14 @@ public class TaskController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<GetTaskResponseDto> createTask(@RequestBody CreateTaskRequestDto createTaskRequestDto) {
-        GetTaskResponseDto createdTask = taskService.createTask(createTaskRequestDto);
+    public ResponseEntity<TrackerResponse<TaskResult>> createTask(@RequestBody CreateTaskRequestDto createTaskRequestDto) {
+        TrackerResponse<TaskResult> task = taskService.createTask(createTaskRequestDto);
 
-        return ResponseEntity.ok(createdTask);
+        return ResponseEntity.ok(task);
     }
 
     @PutMapping("/{taskId}/status")
-    public ResponseEntity<ChangeStatusTaskResponse> changeStatus(
+    public ResponseEntity<TrackerResponse<ChangeStatusTaskBody>> changeStatus(
             @PathVariable UUID taskId,
             @RequestBody ChangeStatusTaskRequest changeStatusTaskRequest) {
 
