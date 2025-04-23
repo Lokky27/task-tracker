@@ -10,7 +10,6 @@ import ru.srfholding.trackerdto.task.CreateTaskRequestDto;
 import ru.srfholding.trackerdto.task.response.ChangeStatusTaskBody;
 import ru.srfholding.trackerdto.task.response.TaskResult;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,31 +23,35 @@ public class TaskController {
     public ResponseEntity<List<TrackerResponse<TaskResult>>> getTasks(@RequestHeader("rqId") String rqUid,
                                                                       @RequestHeader("rqTm") String rqTm) {
 
-        return ResponseEntity.ok(taskService.getTasks());
+        return ResponseEntity.ok(taskService.getTasks(rqUid, rqTm));
     }
 
     @GetMapping("/{taskId}")
     public ResponseEntity<TrackerResponse<TaskResult>> getTaskById(
-            @RequestHeader("rqId") String rqId,
-            @RequestHeader("rqTm") Instant rqTm,
+            @RequestHeader("rqUid") String rqUid,
+            @RequestHeader("rqTm") String rqTm,
             @PathVariable UUID taskId
     ) {
 
-        return ResponseEntity.ok(taskService.getTaskById(taskId));
+        return ResponseEntity.ok(taskService.getTaskById(rqUid, rqTm, taskId));
     }
 
     @PostMapping("/create")
-    public ResponseEntity<TrackerResponse<TaskResult>> createTask(@RequestBody CreateTaskRequestDto createTaskRequestDto) {
-        TrackerResponse<TaskResult> task = taskService.createTask(createTaskRequestDto);
+    public ResponseEntity<TrackerResponse<TaskResult>> createTask(@RequestHeader("rqUid") String rqUid,
+                                                                  @RequestHeader("rqTm") String rqTm,
+                                                                  @RequestBody CreateTaskRequestDto createTaskRequestDto) {
+        TrackerResponse<TaskResult> task = taskService.createTask(rqUid, rqTm, createTaskRequestDto);
 
         return ResponseEntity.ok(task);
     }
 
     @PutMapping("/{taskId}/status")
     public ResponseEntity<TrackerResponse<ChangeStatusTaskBody>> changeStatus(
+            @RequestHeader("rqUid") String rqUid,
+            @RequestHeader("rqTm") String rqTm,
             @PathVariable UUID taskId,
             @RequestBody ChangeStatusTaskRequest changeStatusTaskRequest) {
 
-        return ResponseEntity.ok(taskService.changeTaskStatus(taskId, changeStatusTaskRequest));
+        return ResponseEntity.ok(taskService.changeTaskStatus(rqUid, rqTm, taskId, changeStatusTaskRequest));
     }
 }
