@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import ru.srfholding.trackerdto.task.response.TaskResult;
+import ru.srfholding.trackerdto.users.response.UserResult;
 import ru.srfholding.trackermodels.converter.constant.ProjectStatus;
 
 import java.time.LocalDateTime;
@@ -49,5 +51,9 @@ public class ProjectResult {
     /**
      * Участники проекта
      */
-    List<UUID> projectMembers;
+    List<UserResult> projectMembers;
+    /**
+     * Задачи проекта
+     */
+    List<TaskResult> tasks;
 }

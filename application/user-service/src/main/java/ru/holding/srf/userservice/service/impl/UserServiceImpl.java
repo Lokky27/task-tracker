@@ -37,6 +37,7 @@ public class UserServiceImpl implements UserService {
         if (request.getRole() == null) {
             userEntity.setRole(USER);
         }
+        userEntity.setIsActive(true);
 
         UserEntity savedUser = userRepository.save(userEntity);
         return ResponseBuilder.<UserResult> success(rqUid, rqTm)

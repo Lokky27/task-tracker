@@ -5,12 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.srfholding.mapper.ProjectMapper;
 import ru.srfholding.exception.ProjectOwnerNotFoundException;
 import ru.srfholding.service.ProjectService;
 import ru.srfholding.trackerdto.base.ResponseBuilder;
 import ru.srfholding.trackerdto.base.response.TrackerErrors;
 import ru.srfholding.trackerdto.base.response.TrackerResponse;
+import ru.srfholding.trackerdto.mapper.ProjectMapper;
 import ru.srfholding.trackerdto.project.request.CreateProjectRequest;
 import ru.srfholding.trackerdto.project.response.ProjectResult;
 import ru.srfholding.trackermodels.model.ProjectEntity;
@@ -19,10 +19,12 @@ import ru.srfholding.trackermodels.repository.ProjectRepository;
 import ru.srfholding.trackermodels.repository.UserRepository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static ru.srfholding.trackerdto.project.constant.ProjectError.PROJECT_NAME_IS_EMPTY;
 import static ru.srfholding.trackerdto.project.constant.ProjectError.PROJECT_OWNER_NOT_FOUND;
+import static ru.srfholding.trackermodels.converter.constant.ProjectStatus.NEW;
 
 @Slf4j
 @Service
@@ -59,9 +61,11 @@ public class ProjectServiceImpl implements ProjectService {
         project.setProjectName(request.getName());
         project.setDescription(request.getDescription());
         project.setOwner(owner);
+        project.setStatusCode(NEW);
 
         ProjectEntity savedProject = projectRepository.save(project);
         ProjectResult projectResult = projectMapper.mapEntityToResult(savedProject);
+        projectResult.setProjectMembers(Collections.emptyList());
 
         log.info("Проект [{}] успешно создан владельцем [{}]", savedProject.getProjectName(), owner.getUserId());
 

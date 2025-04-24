@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.srfholding.exception.AssigneeNotFoundException;
 import ru.srfholding.exception.ProjectNotFoundException;
 import ru.srfholding.exception.TaskNotFoundException;
-import ru.srfholding.mapper.TaskMapper;
+import ru.srfholding.trackerdto.mapper.TaskMapper;
 import ru.srfholding.service.TaskService;
 import ru.srfholding.trackerdto.base.ResponseBuilder;
 import ru.srfholding.trackerdto.base.response.TrackerResponse;

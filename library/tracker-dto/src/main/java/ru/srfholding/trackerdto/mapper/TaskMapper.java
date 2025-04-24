@@ -1,4 +1,4 @@
-package ru.srfholding.mapper;
+package ru.srfholding.trackerdto.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -6,7 +6,11 @@ import ru.srfholding.trackerdto.task.CreateTaskRequestDto;
 import ru.srfholding.trackerdto.task.response.TaskResult;
 import ru.srfholding.trackermodels.model.TaskEntity;
 
-@Mapper
+import java.util.List;
+
+import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
+
+@Mapper(componentModel = SPRING)
 public interface TaskMapper {
 
     @Mapping(target = "title", source = "title")
@@ -27,4 +31,17 @@ public interface TaskMapper {
     @Mapping(target = "createdAt", source = "createdAt")
     @Mapping(target = "updatedAt", source = "updatedAt")
     TaskResult mapResult(TaskEntity taskEntity);
+
+    @Mapping(target = "title", source = "title")
+    @Mapping(target = "description", source = "description")
+    @Mapping(target = "deadline", source = "deadline")
+    @Mapping(target = "statusCode", source = "statusCode")
+    @Mapping(target = "taskTypeCode", source = "taskTypeCode")
+    @Mapping(target = "priority", source = "priority")
+    @Mapping(target = "createdAt", source = "createdAt")
+    TaskEntity mapToEntity(TaskResult result);
+
+    List<TaskEntity> mapToEntityList(List<TaskResult> results);
+
+    List<TaskResult> mapToResultList(List<TaskEntity> entities);
 }

@@ -15,7 +15,7 @@ import ru.srfholding.trackerdto.project.response.ProjectResult;
 public class ProjectController {
     private final ProjectService projectService;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<TrackerResponse<ProjectResult>> createProject(
             @RequestHeader("rqUid") String rqUid,
             @RequestHeader("rqTm") String rqTm,
