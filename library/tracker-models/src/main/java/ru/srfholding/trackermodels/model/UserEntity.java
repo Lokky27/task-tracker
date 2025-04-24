@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import ru.srfholding.trackermodels.converter.UserRoleConverter;
+import ru.srfholding.trackermodels.converter.constant.UserRole;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -62,7 +64,8 @@ public class UserEntity {
      * Роль
      */
     @Column(name = "role")
-    private Integer role;
+    @Convert(converter = UserRoleConverter.class)
+    private UserRole role;
     /**
      * Пользователь активен/не активен
      */
