@@ -1,0 +1,211 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2025-04-30_add_board_and_sprint_table
+      author: v.laktyushin
+      changes:
+        - createTable:
+            schemaName: task_tracker
+            tableName: board
+            remarks: "Канбан доски"
+            columns:
+              - column:
+                  name: board_id
+                  type: uuid
+                  remarks: "ID доски"
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: board_id_pk
+              - column:
+                  name: project_id
+                  type: uuid
+                  remarks: "ID проекта"
+                  constraints:
+                    foreignKeyName: board_project_fk
+                    nullable: false
+                    referencedTableName: project
+                    referencedColumnNames: project_id
+              - column:
+                  name: board_name
+                  type: varchar(255)
+                  remarks: "Название доски"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  remarks: "Дата создания"
+                  constraints:
+                    nullable: false
+                  defaultValueComputed: now()
+        - createTable:
+            schemaName: task_tracker
+            tableName: sprint
+            remarks: "Спринты"
+            columns:
+              - column:
+                  name: sprint_id
+                  type: uuid
+                  remarks: "ID спринта"
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: sprint_id_pk
+              - column:
+                  name: board_id
+                  type: uuid
+                  remarks: "ID доски"
+                  constraints:
+                    referencedTableName: board
+                    referencedColumnNames: board_id
+                    foreignKeyName: sprint_board_fk
+        - createTable:
+            schemaName: task_tracker
+            tableName: comment
+            remarks: "Комментарии к задачам"
+            columns:
+              - column:
+                  name: comment_id
+                  type: uuid
+                  remarks: "ID комментария"
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: comment_id_pk
+              - column:
+                  name: task_id
+                  type: uuid
+                  remarks: "ID задачи"
+                  constraints:
+                    nullable: false
+                    referencedTableName: task
+                    referencedColumnNames: task_id
+                    foreignKeyName: comment_task_fk
+              - column:
+                  name: author_id
+                  type: uuid
+                  remarks: "ID автора"
+                  constraints:
+                    nullable: false
+                    referencedTableName: user_profile
+                    referencedColumnNames: user_id
+                    foreignKeyName: user_profile_comment_fk
+              - column:
+                  name: content
+                  type: text
+                  remarks: "Текст комментария"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  remarks: "Дата создания"
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+        - createTable:
+            schemaName: task_tracker
+            tableName: file_attachment
+            remarks: "Вложение"
+            columns:
+              - column:
+                  name: attachment_id
+                  type: uuid
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: file_attachment_id_pk
+              - column:
+                  name: task_id
+                  type: uuid
+                  remarks: "ID задачи"
+                  constraints:
+                    nullable: false
+                    referencedTableName: task
+                    referencedColumnNames: task_id
+                    foreignKeyName: attachment_task_fk
+              - column:
+                  name: file_name
+                  type: varchar(255)
+                  remarks: "Наименование вложения"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: url
+                  type: varchar(255)
+                  remarks: "Путь, по которому находится файл"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: uploaded_at
+                  type: timestamp
+                  remarks: "Дата загрузки"
+                  constraints:
+                    nullable: false
+                  defaultValueComputed: now()
+        - createTable:
+            schemaName: task_tracker
+            tableName: tag
+            remarks: "Тэг"
+            columns:
+              - column:
+                  name: tag_id
+                  type: uuid
+                  remarks: "ID тэга"
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: tag_id_pk
+                  defaultValueComputed: gen_random_uuid()
+              - column:
+                  name: tag_name
+                  type: varchar(100)
+                  remarks: "Наименование тэга"
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: color
+                  type: varchar(20)
+                  remarks: "Код цвета"
+        - createTable:
+            schemaName: task_tracker
+            tableName: task_tag
+            remarks: "Задачи и тэги"
+            columns:
+              - column:
+                  name: task_id
+                  type: uuid
+                  remarks: "ID задачи"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: tag_id
+                  type: uuid
+                  remarks: "ID тэга"
+                  constraints:
+                    nullable: false
+
+        - addPrimaryKey:
+            tableName: task_tag
+            constraintName: pk_task_tag
+            columnNames: tag_id, task_id
+        - addForeignKeyConstraint:
+            baseTableName: task_tag
+            baseColumnNames: task_id
+            referencedTableName: task
+            referencedColumnNames: task_id
+            constraintName: tasktag_task_fk
+        - addForeignKeyConstraint:
+            baseTableName: task_tag
+            baseColumnNames: tag_id
+            referencedTableName: tag
+            referencedColumnNames: tag_id
+            constraintName: tasktag_tag_fk
+
+
+

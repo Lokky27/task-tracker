@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2025-05-03_rename_users_table
+      author: v.laktyushin
+      changes:
+        - renameTable:
+            oldTableName: users
+            newTableName: user_profile

@@ -2,6 +2,7 @@ package ru.srfholding.trackerdto.task.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import ru.srfholding.trackermodels.converter.constant.StatusType;
 
 import java.util.UUID;
 
@@ -20,5 +21,12 @@ public class ChangeStatusTaskBody {
      * ID задачи
      */
     UUID taskID;
-
+    /**
+     * Старый статус
+     */
+    StatusType oldStatus;
+    /**
+     * Новый статус
+     */
+    StatusType newStatus;
 }

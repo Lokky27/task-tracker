@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.holding.srf.userservice.mapper.UserMapper;
+import ru.srfholding.trackerdto.mapper.UserMapper;
 import ru.holding.srf.userservice.service.UserService;
 import ru.srfholding.trackerdto.base.ResponseBuilder;
 import ru.srfholding.trackerdto.base.response.TrackerResponse;

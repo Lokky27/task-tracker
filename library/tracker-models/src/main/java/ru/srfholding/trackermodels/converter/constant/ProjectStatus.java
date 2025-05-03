@@ -11,7 +11,11 @@ import java.util.Arrays;
 @Getter
 @RequiredArgsConstructor
 public enum ProjectStatus {
-    NEW(1, "Новый проект");
+    NEW(1, "Новый проект"),
+    IN_PROGRESS(2, "В разработке"),
+    CANCELED(3, "Отменен"),
+    DONE(4, "Завершен"),
+    ARCHIVED(5, "В архиве");
 
     private final Integer code;
     private final String description;

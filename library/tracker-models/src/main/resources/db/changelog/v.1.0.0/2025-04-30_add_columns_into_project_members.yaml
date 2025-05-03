@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2025-04-30_add_columns_into_project_members
+      author: v.laktyushin
+      changes:
+        - addColumn:
+            tableName: project_members
+            schemaName: task_tracker
+            columns:
+              - column:
+                  name: role
+                  type: int
+                  remarks: "Роль"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: joined_at
+                  type: timestamp
+                  remarks: "Дата добавления в проект"
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+

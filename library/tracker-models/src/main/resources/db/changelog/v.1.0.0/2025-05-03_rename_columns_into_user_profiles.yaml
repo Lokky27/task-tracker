@@ -1,0 +1,57 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2025-05-03_rename_columns_into_user_profile
+      author: v.laktyushin
+      changes:
+        - dropColumn:
+            tableName: user_profile
+            columnName: password
+        - dropColumn:
+            tableName: user_profile
+            columnName: role
+        - dropColumn:
+            tableName: user_profile
+            columnName: first_name
+        - dropColumn:
+            tableName: user_profile
+            columnName: surname
+        - dropColumn:
+            tableName: user_profile
+            columnName: middle_name
+        - dropColumn:
+            tableName: user_profile
+            columnName: is_active
+        - addColumn:
+            tableName: user_profile
+            columns:
+              - column:
+                  name: keycloak_id
+                  type: uuid
+                  remarks: "ID в системе Keycloak"
+                  constraints:
+                    nullable: true
+              - column:
+                  name: display_name
+                  type: varchar(255)
+                  remarks: "Логин"
+                  constraints:
+                    nullable: true
+              - column:
+                  name: status
+                  type: int
+                  remarks: "Статус пользователя"
+                  defaultValue: '1'
+              - column:
+                  name: avatar_uri
+                  type: text
+                  remarks: "URI аватара"
+              - column:
+                  name: timezone
+                  type: varchar(50)
+                  remarks: "Таймзона"
+                  defaultValue: 'UTC'
+              - column:
+                  name: language
+                  type: varchar(10)
+                  remarks: "Язык"
+                  defaultValue: 'ru'

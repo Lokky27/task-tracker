@@ -1,4 +1,4 @@
-package ru.holding.srf.userservice.mapper;
+package ru.srfholding.trackerdto.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

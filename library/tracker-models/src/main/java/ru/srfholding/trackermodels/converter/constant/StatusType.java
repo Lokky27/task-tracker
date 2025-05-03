@@ -28,7 +28,7 @@ public enum StatusType {
 
     private final Integer code;
     private final String description;
-    private final List<Integer> nextStatusCode;
+    private final List<Integer> nextStatusCodes;
 
     public static StatusType findStatusByCode(Integer code) {
         if (code == null) {

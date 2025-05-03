@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestHeader;
 import ru.srfholding.exception.AssigneeNotFoundException;
+import ru.srfholding.exception.InvalidChangeStatusException;
 import ru.srfholding.exception.ProjectNotFoundException;
 import ru.srfholding.exception.TaskNotFoundException;
 import ru.srfholding.trackerdto.base.ResponseBuilder;
@@ -35,7 +36,7 @@ public class GlobalTaskServiceControllerAdvice {
                                                                              @RequestHeader("rqUid") String rqUid,
                                                                              @RequestHeader("rqTm") String rqTm) {
         log.warn("rqUid: [{}]. Ошибка получения задачи из БД", rqUid, e);
-        return ResponseEntity.badRequest()
+        return ResponseEntity.internalServerError()
                 .body(ResponseBuilder.<Void>error(rqUid, rqTm)
                         .withError(TASK_NOT_FOUND)
                         .build());
@@ -47,8 +48,7 @@ public class GlobalTaskServiceControllerAdvice {
                                                                                 @RequestHeader("rqTm") String rqTm) {
         log.warn("rqUid: [{}]. Проект не найден в системе", rqUid, e);
 
-        return ResponseEntity
-                .badRequest()
+        return ResponseEntity.internalServerError()
                 .body(ResponseBuilder.<Void>error(rqUid, rqTm)
                         .withError(PROJECT_NOT_FOUND)
                         .build());
@@ -60,10 +60,21 @@ public class GlobalTaskServiceControllerAdvice {
                                                                                  @RequestHeader("rqTm") String rqTm) {
         log.warn("rqUid: [{}]. Назначенный пользователь не найден в системе", rqUid, e);
 
-        return ResponseEntity
-                .badRequest()
+        return ResponseEntity.internalServerError()
                 .body(ResponseBuilder.<Void>error(rqUid, rqTm)
                         .withError(ASSIGNEE_NOT_FOUND)
+                        .build());
+    }
+
+    @ExceptionHandler(InvalidChangeStatusException.class)
+    public ResponseEntity<TrackerResponse<Void>> handleInvalidTaskStatusException(InvalidChangeStatusException e,
+                                                                                  @RequestHeader("rqUid") String rqUid,
+                                                                                  @RequestHeader("rqTm") String rqTm) {
+        log.error("rqUid: [{}]. Неверный статус для перевода задачи", rqUid, e);
+
+        return ResponseEntity.internalServerError()
+                .body(ResponseBuilder.<Void>error(rqUid, rqTm)
+                        .withError(INVALID_TASK_STATUS)
                         .build());
     }
 }
