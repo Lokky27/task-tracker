@@ -10,14 +10,14 @@ import java.util.Arrays;
  */
 @Getter
 @RequiredArgsConstructor
-public enum UserRole {
-    USER(1, "Пользователь"),
-    ADMIN(2, "Администратор");
+public enum UserStatus {
+    ACTIVE(1, "Пользователь"),
+    DEACTIVE(2, "Администратор");
 
     private final Integer code;
     private final String description;
 
-    public static UserRole getRoleByCode(Integer code) {
+    public static UserStatus getRoleByCode(Integer code) {
         return Arrays.stream(values())
                 .filter(role -> code.equals(role.getCode()))
                 .findAny()

@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import ru.srfholding.trackermodels.converter.UserRoleConverter;
-import ru.srfholding.trackermodels.converter.constant.UserRole;
+import ru.srfholding.trackermodels.converter.UserStatusConverter;
+import ru.srfholding.trackermodels.converter.constant.UserStatus;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ import static lombok.AccessLevel.NONE;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "users", schema = "task_tracker")
+@Table(name = "user_profile", schema = "task_tracker")
 public class UserEntity {
     /**
      * ID пользователя
@@ -41,36 +41,36 @@ public class UserEntity {
     @Column(name = "email", nullable = false)
     private String email;
     /**
-     * Имя пользователя
+     * ID из Keycloak
      */
-    @Column(name = "first_name")
-    private String firstName;
+    @Column(name = "keycloak_id")
+    private UUID keycloakId;
     /**
-     * Фамилия пользователя
+     * Логин пользователя
      */
-    @Column(name = "surname")
-    private String surname;
+    @Column(name = "display_name")
+    private String displayName;
     /**
-     * Отчество пользователя
+     * Статус пользователя
      */
-    @Column(name = "middle_name")
-    private String middleName;
+    @Column(name = "status")
+    @Convert(converter = UserStatusConverter.class)
+    private UserStatus status;
     /**
-     * Пароль
+     * URI Аватара
      */
-    @Column(name = "password")
-    private char[] password;
+    @Column(name = "avatar_uri")
+    private String avatarUri;
     /**
-     * Роль
+     * Таймзона
      */
-    @Column(name = "role")
-    @Convert(converter = UserRoleConverter.class)
-    private UserRole role;
+    @Column(name = "timezone")
+    private String timezone;
     /**
-     * Пользователь активен/не активен
+     * Язык
      */
-    @Column(name = "is_active")
-    private Boolean isActive;
+    @Column(name = "language")
+    private String language;
     /**
      * Дата создания пользователя
      */

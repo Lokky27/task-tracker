@@ -1,8 +1,11 @@
 package ru.srfholding.trackerdto.users.response;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import ru.srfholding.trackermodels.converter.constant.UserRole;
+import ru.srfholding.trackermodels.converter.constant.UserStatus;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -27,27 +30,31 @@ public class UserResult {
      */
     String email;
     /**
-     * Имя пользователя
+     * Логин пользователя
      */
-    String firstName;
+    String login;
     /**
-     * Фамилия
+     * URI аватара
      */
-    String surname;
+    String avatarUri;
     /**
-     * Отчества
+     * Таймзона
      */
-    String middleName;
+    String timezone;
     /**
-     * Роль
+     * Язык
      */
-    UserRole role;
+    String language;
     /**
-     * Активен да/нет
+     * Статус
      */
-    Boolean isActive;
+    UserStatus status;
     /**
      * Дата создания
      */
     LocalDateTime createdAt;
+    /**
+     * Дата обновления
+     */
+    LocalDateTime updatedAt;
 }
