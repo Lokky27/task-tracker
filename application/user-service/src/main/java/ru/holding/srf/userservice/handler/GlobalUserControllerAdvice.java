@@ -28,6 +28,7 @@ public class GlobalUserControllerAdvice {
                         .build());
     }
 
+    @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<TrackerResponse<Void>> handleUserNotFoundException(UserNotFoundException e,
                                                                              @RequestHeader("rqUid") String rqUid,
                                                                              @RequestHeader("rqTm") String rqTm) {
