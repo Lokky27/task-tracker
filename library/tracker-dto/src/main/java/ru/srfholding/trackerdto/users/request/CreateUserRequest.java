@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.util.UUID;
+
 import static lombok.AccessLevel.PRIVATE;
 
 /**
@@ -25,9 +27,23 @@ public class CreateUserRequest {
     @Email(message = "Email не валиден!", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
     String email;
     /**
-     * Пароль
+     * Логин пользователя
      */
-    @NotNull(message = "Пароль должен быть заполнен")
-    @Size(min = 12, max = 30, message = "Пароль не должен быть короче 12 символов")
-    String password;
+    String login;
+    /**
+     * ID системы Keycloak
+     */
+    UUID keycloakId;
+    /**
+     * URL аватара
+     */
+    String avatarUrl;
+    /**
+     * Таймзона
+     */
+    String timezone;
+    /**
+     * Язык
+     */
+    String language;
 }

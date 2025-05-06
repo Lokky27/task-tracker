@@ -26,6 +26,10 @@ public class UserResult {
      */
     UUID userId;
     /**
+     * ID в системе Keycloak
+     */
+    String keycloakId;
+    /**
      * Email пользователя
      */
     String email;

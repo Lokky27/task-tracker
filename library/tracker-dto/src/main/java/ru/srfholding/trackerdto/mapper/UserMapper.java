@@ -12,6 +12,11 @@ import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 public interface UserMapper {
 
     @Mapping(target = "email", source = "email")
+    @Mapping(target = "keycloakId", source = "keycloakId")
+    @Mapping(target = "displayName", source = "login")
+    @Mapping(target = "avatarUri", source = "avatarUrl")
+    @Mapping(target = "timezone", source = "timezone")
+    @Mapping(target = "language", source = "language")
     UserEntity mapToUserEntity(CreateUserRequest request);
 
     @Mapping(target = "userId", source = "userId")
