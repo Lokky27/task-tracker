@@ -1,6 +1,8 @@
 package ru.holding.srf.userservice.rest;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.holding.srf.userservice.service.UserService;
@@ -11,6 +13,7 @@ import ru.srfholding.trackerdto.users.response.UserResult;
 
 import java.util.UUID;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
@@ -36,12 +39,12 @@ public class UserController {
     @PostMapping("/create")
     public ResponseEntity<TrackerResponse<UserResult>> createUser(@RequestHeader("rqUid") String rqUid,
                                                                   @RequestHeader("rqTm") String rqTm,
-                                                                  @RequestBody CreateUserRequest request) {
-
+                                                                  @RequestBody @Valid CreateUserRequest request) {
+        log.debug("Запрос с rqUid: {} и rqTm: {}, request: {}", rqUid, rqTm, request);
         return ResponseEntity.ok(userService.createUser(rqUid, rqTm, request));
     }
 
-    @PatchMapping("/{userId}/update")
+    @PutMapping("/{userId}/update")
     public ResponseEntity<TrackerResponse<UserResult>> updateUserById(@RequestHeader("rqUid") String rqUid,
                                                                       @RequestHeader("rqTm") String rqTm,
                                                                       @PathVariable("userId") String userId,

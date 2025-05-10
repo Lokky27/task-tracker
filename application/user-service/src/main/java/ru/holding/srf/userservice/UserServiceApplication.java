@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "ru.srfholding.trackermodels.repository")
 @EntityScan(basePackages = "ru.srfholding.trackermodels.model")
-@ComponentScan(basePackages = "ru.srfholding")
+@ComponentScan(basePackages = {"ru.srfholding", "ru.holding.srf"})
 public class UserServiceApplication {
 
     public static void main(String[] args) {

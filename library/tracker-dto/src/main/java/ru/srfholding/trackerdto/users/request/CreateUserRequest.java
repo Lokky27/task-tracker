@@ -24,7 +24,7 @@ public class CreateUserRequest {
      * Email пользователя
      */
     @NotEmpty(message = "Поле Email не может быть пустым!")
-    @Email(message = "Email не валиден!", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
+    @Email(message = "Email не валиден!")
     String email;
     /**
      * Логин пользователя

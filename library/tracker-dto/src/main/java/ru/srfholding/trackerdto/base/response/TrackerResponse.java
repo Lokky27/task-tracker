@@ -31,6 +31,10 @@ public class TrackerResponse<T> {
      */
     T result;
     /**
+     * Дополнительная информация (если ошибки)
+     */
+    List<ValidationErrorDto> data;
+    /**
      * Метадата
      */
     ResponseMetadata metadata;

@@ -3,6 +3,7 @@ package ru.srfholding.trackerdto.base;
 import ru.srfholding.trackerdto.base.response.Status;
 import ru.srfholding.trackerdto.base.response.TrackerErrors;
 import ru.srfholding.trackerdto.base.response.TrackerResponse;
+import ru.srfholding.trackerdto.base.response.ValidationErrorDto;
 
 import java.util.List;
 
@@ -42,6 +43,12 @@ public class ResponseBuilder<T> {
 
     public ResponseBuilder<T> withError(TrackerErrors error) {
         response.getErrors().add(error.toResponseError());
+
+        return this;
+    }
+
+    public ResponseBuilder<T> withData(List<ValidationErrorDto> data) {
+        response.setData(data);
 
         return this;
     }

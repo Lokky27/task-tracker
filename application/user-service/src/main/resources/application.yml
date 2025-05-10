@@ -21,5 +21,6 @@ spring:
 logging:
   level:
     liquibase: DEBUG
+    org.springframework.web: DEBUG
 server:
   port: 8081
