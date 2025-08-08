@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: init_notification_tables
+      author: vlokky
+      changes:
+        - createTable:
+            tableName: notification
+            schemaName: notification_service_schema
+            remarks: "Уведомления"
+            columns:
+              - column:
+                  name: notification_id
+                  type: uuid
+                  remarks: "ID уведомления"
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: notification_pk\
+              - column:
+                  name: notification_type
+                  type: varchar(50)
+                  remarks: "Тип уведомления"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: content
+                  type: text
+                  remarks: "Содержание уведомления"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_read
+                  type: boolean
+                  remarks: "Прочитано (Да/Нет)"
+                  defaultValue: "false"
+              - column:
+                  name: created_at
+                  type: timestamp
+                  remarks: "Дата создания"
+                  defaultValueComputed: now()

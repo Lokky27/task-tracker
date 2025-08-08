@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/task-service/v.1.0.0/2025-07-31_init_schema.yaml
+  - include:
+      file: db/changelog/task-service/v.1.0.0/2025-08-05_init_task_service_tables.yaml

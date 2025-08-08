@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/user-service/v.1.0.0/2025-07-26_init_schema.yaml
+  - include:
+      file: db/changelog/user-service/v.1.0.0/2025-07-26_init_user_service_tables.yaml

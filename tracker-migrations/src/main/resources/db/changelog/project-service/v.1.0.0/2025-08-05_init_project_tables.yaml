@@ -1,0 +1,161 @@
+databaseChangeLog:
+  - changeSet:
+      id: init_project_service_tables
+      author: vlokky
+      changes:
+        - createTable:
+            schemaName: project_service_schema
+            tableName: project
+            columns:
+              - column:
+                  name: project_id
+                  type: uuid
+                  remarks: "ID проекта"
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    nullable: false
+                    primaryKeyName: project_pk
+                    primaryKey: true
+              - column:
+                  name: project_name
+                  type: varchar(100)
+                  remarks: "Название проекта"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: text
+                  remarks: "Описание проекта"
+              - column:
+                  name: team_id
+                  type: uuid
+                  remarks: "ID команды"
+              - column:
+                  name: start_date
+                  type: timestamp
+                  remarks: "Дата начала проекта"
+              - column:
+                  name: end_date
+                  type: timestamp
+                  remarks: "Дата завершения проекта"
+              - column:
+                  name: project_status
+                  type: int
+                  remarks: "Статус проекта"
+                  defaultValue: "1"
+              - column:
+                  name: created_at
+                  type: timestamp
+                  remarks: "Дата создания"
+                  defaultValueComputed: now()
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  remarks: "Дата обновления"
+        - createTable:
+            tableName: project_member
+            schemaName: project_service_schema
+            remarks: "Участники проекта"
+            columns:
+              - column:
+                  name: project_id
+                  type: uuid
+                  remarks: "ID проекта"
+              - column:
+                  name: user_id
+                  type: uuid
+                  remarks: "ID пользователя"
+              - column:
+                  name: member_role
+                  type: int
+                  remarks: "Роль пользователя"
+        - addPrimaryKey:
+            tableName: project_member
+            constraintName: project_member_pk
+            columnNames: project_id, user_id
+
+        - createTable:
+            tableName: tag
+            schemaName: project_service_schema
+            remarks: "Тэги проекта"
+            columns:
+              - column:
+                  name: tag_id
+                  type: uuid
+                  remarks: "ID тэга"
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: project_tag_pk
+              - column:
+                  name: tag_name
+                  type: varchar(50)
+                  remarks: "Название тэга"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: tag_color
+                  type: varchar
+                  remarks: "Цвет тэга"
+                  defaultValue: '#000000'
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  remarks: "Дата создания"
+                  defaultValueComputed: now()
+        - createTable:
+            schemaName: project_service_schema
+            tableName: task_tag
+            remarks: "Тэги задач"
+            columns:
+              - column:
+                  name: task_id
+                  type: uuid
+                  remarks: "ID задачи"
+              - column:
+                  name: tag_id
+                  type: uuid
+                  remarks: "ID тэга"
+        - addPrimaryKey:
+            tableName: task_tag
+            constraintName: task_tag_pk
+            columnNames: task_id, tag_id
+
+        - createTable:
+            schemaName: project_service_schema
+            tableName: board
+            remarks: "Доска"
+            columns:
+              - column:
+                  name: board_id
+                  type: uuid
+                  remarks: "ID доски"
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: board_pk
+                    nullable: false
+              - column:
+                  name: board_name
+                  type: varchar(255)
+                  remarks: "Название доски"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: columns
+                  type: jsonb
+                  remarks: "Колонки"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  remarks: "Дата создания"
+                  defaultValueComputed: now()
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  remarks: "Дата обновления"

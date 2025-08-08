@@ -6,14 +6,17 @@ spring:
     url: jdbc:postgresql://localhost:5432/task_tracker_db
     username: postgres
     password: postgres
-    hikari:
-      schema: task_tracker
 
   jpa:
     show-sql: true
+    properties:
+      hibernate:
+        default_schema: project_service_schema
 
   liquibase:
-    enabled: false
+    change-log: classpath:/db/changelog/task-service/task_master_changelog.yaml
+    enabled: true
+    default-schema: project_service_schema
 
   main:
     allow-bean-definition-overriding: true

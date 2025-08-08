@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: init_activity_service_schema
+      author: vlokky
+      changes:
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            sql: CREATE SCHEMA IF NOT EXISTS activity_service_schema;

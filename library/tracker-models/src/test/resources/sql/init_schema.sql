@@ -1,1 +1,1 @@
-CREATE SCHEMA IF NOT EXISTS task_tracker;
+CREATE SCHEMA IF NOT EXISTS user_details_service_schema;

@@ -17,6 +17,7 @@
 		<module>task-service</module>
 		<module>project-service</module>
 		<module>user-service</module>
+		<module>auth-service</module>
 	</modules>
 
 </project>

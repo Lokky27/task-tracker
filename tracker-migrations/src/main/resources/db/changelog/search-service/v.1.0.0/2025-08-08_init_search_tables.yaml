@@ -1,0 +1,37 @@
+databaseChangeLog:
+  - changeSet:
+      id: init_search_service_tables
+      author: vlokky
+      changes:
+        - createTable:
+            schemaName: search_service_schema
+            tableName: search_index
+            remarks: "Поисковые индексы"
+            columns:
+              - column:
+                  name: index_id
+                  type: uuid
+                  remarks: "ID индекса"
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: search_index_pk
+              - column:
+                  name: entity_type
+                  type: varchar(100)
+                  remarks: "Тип сущности"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: entity_id
+                  type: uuid
+                  remarks: "ID сущности"
+              - column:
+                  name: search_text
+                  type: text
+                  remarks: "Текст поиска"
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  remarks: "Дата обновления"

@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - changeSet:
+      id: init_auth_service_tables
+      author: vlokky
+      changes:
+        - createTable:
+            schemaName: auth_service_schema
+            tableName: auth_session
+            remarks: "Пользовательская сессия"
+            columns:
+              - column:
+                  name: session_id
+                  type: uuid
+                  remarks: "ID сессии"
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: auth_session_pk
+              - column:
+                  name: token
+                  type: varchar(255)
+                  remarks: "Токен пользователя"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: expiry_date
+                  type: timestamp
+                  remarks: "Дата истечения токена"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  remarks: "Дата создания"
+                  defaultValueComputed: now()

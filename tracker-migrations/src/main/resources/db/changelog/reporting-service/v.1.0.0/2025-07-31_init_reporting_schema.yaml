@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: init_reporting_schema
+      author: vlokky
+      changes:
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            sql: CREATE SCHEMA IF NOT EXISTS reporting_schema;

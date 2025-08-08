@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/auth-service/v.1.0.0/2025-07-31_init_auth_schema.yaml
+  - include:
+      file: db/changelog/auth-service/v.1.0.0/2025-07-31_init_auth_schema.yaml

@@ -1,0 +1,38 @@
+databaseChangeLog:
+  - changeSet:
+      id: init_file_service_tables
+      author: vlokky
+      changes:
+        - createTable:
+            schemaName: file_service_schema
+            tableName: file
+            remarks: "Файлы"
+            columns:
+              - column:
+                  name: file_id
+                  type: uuid
+                  remarks: "ID файла"
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: file_pk
+              - column:
+                  name: file_name
+                  type: varchar(255)
+                  remarks: "Название файла"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: content_type
+                  type: varchar(100)
+                  remarks: "Тип файла"
+              - column:
+                  name: size
+                  type: int
+                  remarks: "Размер файла"
+              - column:
+                  name: upload_date
+                  type: timestamp
+                  remarks: "Дата подгрузки"
+                  defaultValueComputed: now()

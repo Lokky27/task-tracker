@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: init_activity_tables
+      author: vlokky
+      changes:
+        - createTable:
+            schemaName: activity_service_schema
+            tableName: activity_log
+            remarks: "Аудит"
+            columns:
+              - column:
+                  name: activity_id
+                  type: uuid
+                  remarks: "ID лога"
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: activity_log_pk
+              - column:
+                  name: action
+                  type: varchar(100)
+                  remarks: "Действие"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: entity_type
+                  type: varchar(100)
+                  remarks: "Тип сущности"
+              - column:
+                  name: entity_id
+                  type: uuid
+                  remarks: "ID сущности"
+              - column:
+                  name: log_details
+                  type: jsonb
+                  remarks: "Описание изменений"
+              - column:
+                  name: created_at
+                  type: timestamp
+                  remarks: "Дата создания"
+                  defaultValueComputed: now()

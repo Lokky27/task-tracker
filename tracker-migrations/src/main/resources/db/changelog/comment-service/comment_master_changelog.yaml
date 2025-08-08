@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/comment-service/v.1.0.0/2025-07-31_init_comment_service_schema.yaml
+  - include:
+      file: db/changelog/comment-service/v.1.0.0/2025-08-08_init_comment_service_tables.yaml

@@ -1,0 +1,103 @@
+databaseChangeLog:
+  - changeSet:
+      id: init_task_service_tables
+      author: vlokky
+      changes:
+        - createTable:
+            schemaName: task_service_schema
+            tableName: task
+            remarks: "Задачи"
+            columns:
+              - column:
+                  name: task_id
+                  type: uuid
+                  remarks: "ID задачи"
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: task_pk
+              - column:
+                  name: title
+                  type: varchar(255)
+                  remarks: "Заголовок задачи"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: text
+                  remarks: "Описание"
+              - column:
+                  name: project_id
+                  type: uuid
+                  remarks: "ID проекта"
+              - column:
+                  name: assignee_id
+                  type: uuid
+                  remarks: "ID исполнителя"
+              - column:
+                  name: task_status
+                  type: int
+                  remarks: "Статус задачи"
+                  defaultValue: "1"
+              - column:
+                  name: task_type
+                  type: int
+                  remarks: "Тип задачи"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: task_priority
+                  type: int
+                  remarks: "Приоритет"
+                  defaultValue: "1"
+              - column:
+                  name: due_date
+                  type: timestamp
+                  remarks: "Дедлайн"
+              - column:
+                  name: created_at
+                  type: timestamp
+                  remarks: "Дата создания"
+                  defaultValueComputed: now()
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  remarks: "Дата обновления"
+        - createTable:
+            schemaName: task_service_schema
+            tableName: sprint
+            remarks: "Спринты"
+            columns:
+              - column:
+                  name: sprint_id
+                  type: uuid
+                  remarks: "ID спринта"
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: task_sprint_pk
+                    nullable: false
+              - column:
+                  name: sprint_name
+                  type: varchar(255)
+                  remarks: "Название спринта"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: start_date
+                  type: timestamp
+                  remarks: "Дата старта"
+              - column:
+                  name: end_date
+                  type: timestamp
+                  remarks: "Дата окончания"
+              - column:
+                  name: created_at
+                  type: timestamp
+                  remarks: "Дата создания"
+                  defaultValueComputed: now()
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  remarks: "Дата обновления"

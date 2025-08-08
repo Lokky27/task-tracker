@@ -1,0 +1,127 @@
+databaseChangeLog:
+  - changeSet:
+      id: init_user_service_tables
+      author: vlokky
+      changes:
+        - createTable:
+            tableName: user_details
+            schemaName: user_details_service_schema
+            remarks: "Пользователи"
+            columns:
+              - column:
+                  name: user_id
+                  type: uuid
+                  remarks: "ID пользователя"
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: user_details_pk
+              - column:
+                  name: email
+                  type: varchar(100)
+                  remarks: "Электронная почта"
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: first_name
+                  type: varchar(50)
+                  remarks: "Имя"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: surname
+                  type: varchar(100)
+                  remarks: "Фамилия"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: middle_name
+                  type: varchar(100)
+                  remarks: "Отчество"
+              - column:
+                  name: password_hash
+                  type: varchar(255)
+                  remarks: "Пароль"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role
+                  type: int
+                  remarks: "Роль"
+                  constraints:
+                    nullable: false
+                    checkConstraint: "role IN (1, 2, 3)"
+              - column:
+                  name: is_active
+                  type: boolean
+                  remarks: "Активен ли пользователь"
+                  defaultValue: "true"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  remarks: "Дата создания"
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  remarks: "Дата обновления"
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: user_history
+            schemaName: user_details_service_schema
+            remarks: "История изменений пользователей"
+            columns:
+              - column:
+                  name: history_id
+                  type: uuid
+                  remarks: "ID истории"
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: user_history_pk
+              - column:
+                  name: user_id
+                  type: uuid
+                  remarks: "ID пользователя"
+                  constraints:
+                    foreignKeyName: fk_user_history_user
+                    referencedTableName: user_details
+                    referencedColumnNames: user_id
+              - column:
+                  name: change_field
+                  type: varchar(100)
+                  remarks: "Поле, которое изменилось"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: old_value
+                  type: text
+                  remarks: "Старое значение"
+              - column:
+                  name: new_value
+                  type: text
+                  remarks: "Новое значение"
+              - column:
+                  name: changed_by
+                  type: uuid
+                  remarks: "Кем изменилось"
+                  constraints:
+                    foreignKeyName: fk_user_history_changed_by
+                    referencedTableName: user_details
+                    referencedColumnNames: user_id
+              - column:
+                  name: changed_at
+                  type: timestamp
+                  remarks: "Дата изменения"
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false

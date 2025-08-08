@@ -23,6 +23,10 @@
             <artifactId>tracker-dto</artifactId>
         </dependency>
         <dependency>
+            <groupId>ru.holding.srf</groupId>
+            <artifactId>tracker-migrations</artifactId>
+        </dependency>
+        <dependency>
             <groupId>ru.srfholding</groupId>
             <artifactId>tracker-models</artifactId>
         </dependency>

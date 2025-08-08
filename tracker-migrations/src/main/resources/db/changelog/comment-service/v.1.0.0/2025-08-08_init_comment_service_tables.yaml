@@ -1,0 +1,34 @@
+databaseChangeLog:
+  - changeSet:
+      id: init_comment_service_tables
+      author: vlokky
+      changes:
+        - createTable:
+            schemaName: comment_service_schema
+            tableName: comment
+            remarks: "Комментарий"
+            columns:
+              - column:
+                  name: comment_id
+                  type: uuid
+                  remarks: "ID комментария"
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: comment_pk
+              - column:
+                  name: content
+                  type: varchar(255)
+                  remarks: "Содержание комментария"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  remarks: "Дата создания"
+                  defaultValueComputed: now()
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  remarks: "Дата обновления"

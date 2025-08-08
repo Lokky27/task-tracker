@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/activity-service/v.1.0.0/2025-07-31_init_activity_schema.yaml
+  - include:
+      file: db/changelog/activity-service/v.1.0.0/2025-08-08_init_activity_tables.yaml

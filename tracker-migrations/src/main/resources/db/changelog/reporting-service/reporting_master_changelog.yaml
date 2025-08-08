@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/reporting-service/v.1.0.0/2025-07-31_init_reporting_schema.yaml
+  - include:
+      file: db/changelog/reporting-service/v.1.0.0/2025-08-08_init_report_service_tables.yaml
