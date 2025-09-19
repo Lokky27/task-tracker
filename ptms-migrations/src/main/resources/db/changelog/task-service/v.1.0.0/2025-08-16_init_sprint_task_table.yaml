@@ -1,0 +1,64 @@
+databaseChangeLog:
+  - changeSet:
+      id: init_sprint_task_table
+      author: vlokky
+      changes:
+        - createTable:
+            schemaName: task_service_schema
+            tableName: sprint_task
+            remarks: "Задачи спринтов"
+            columns:
+              - column:
+                  name: sprint_id
+                  type: uuid
+                  remarks: "ID спринта"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: task_id
+                  type: uuid
+                  remarks: "ID задачи"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: added_at
+                  type: timestamp with time zone
+                  remarks: "Дата добавления"
+                  defaultValueComputed: now()
+              - column:
+                  name: added_by
+                  type: uuid
+                  remarks: "Кем добавлено"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: removed_at
+                  type: timestamp with time zone
+                  remarks: "Дата и время удаления"
+              - column:
+                  name: removed_by
+                  type: uuid
+                  remarks: "Кем удалено"
+        - addPrimaryKey:
+            schemaName: task_service_schema
+            tableName: sprint_task
+            constraintName: pk_sprint_task
+            columnNames: sprint_id, task_id
+        - addForeignKeyConstraint:
+            baseTableSchemaName: task_service_schema
+            baseTableName: sprint_task
+            baseColumnNames: sprint_id
+            referencedTableSchemaName: task_service_schema
+            referencedTableName: sprint
+            referencedColumnNames: sprint_id
+            constraintName: fk_sprint_task_sprint
+            onDelete: CASCADE
+        - addForeignKeyConstraint:
+            baseTableSchemaName: task_service_schema
+            baseTableName: sprint_task
+            baseColumnNames: task_id
+            referencedTableSchemaName: task_service_schema
+            referencedTableName: task
+            referencedColumnNames: task_id
+            constraintName: fk_task_sprint_task
+            onDelete: CASCADE

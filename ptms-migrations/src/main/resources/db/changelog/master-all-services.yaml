@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/user-service/user_details_master_changelog.yaml
+  - include:
+      file: db/changelog/project-service/project_service-master_changelog.yaml
+  - include:
+      file: db/changelog/task-service/task_service_master_changelog.yaml

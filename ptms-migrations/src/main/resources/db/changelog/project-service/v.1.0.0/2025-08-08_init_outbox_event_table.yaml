@@ -1,0 +1,58 @@
+databaseChangeLog:
+  - changeSet:
+      id: init_outbox_event_table
+      author: vlokky
+      changes:
+        - createTable:
+            schemaName: project_service_schema
+            tableName: outbox_event
+            remarks: "OUTBOX события"
+            columns:
+              - column:
+                  name: event_id
+                  type: uuid
+                  remarks: "ID outbox-события"
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_outbox_event
+                  defaultValueComputed: gen_random_uuid()
+              - column:
+                  name: event_type
+                  type: varchar(100)
+                  remarks: "Тип события"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: aggregate_type
+                  type: varchar(50)
+                  remarks: "Тип аггрегации"
+                  defaultValue: 'PROJECT'
+                  constraints:
+                    nullable: false
+              - column:
+                  name: aggregate_id
+                  type: uuid
+                  remarks: "ID агрегации"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: event_data
+                  type: jsonb
+                  remarks: "Данные события"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp with timezone
+                  remarks: "Дата создания"
+                  defaultValueComputed: now()
+              - column:
+                  name: processed_at
+                  type: timestamp with time zone
+                  remarks: "Дата выполнения"
+              - column:
+                  name: retry_count
+                  type: int
+                  remarks: "Кол-во попыток"
+                  defaultValue: '0'

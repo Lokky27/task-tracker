@@ -1,0 +1,179 @@
+databaseChangeLog:
+  - changeSet:
+      id: init_task_service_tables
+      author: vlokky
+      changes:
+        - createTable:
+            schemaName: task_service_schema
+            tableName: task
+            remarks: "Задачи"
+            columns:
+              - column:
+                  name: task_id
+                  type: uuid
+                  remarks: "ID задачи"
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: task_pk
+              - column:
+                  name: title
+                  type: varchar(255)
+                  remarks: "Заголовок задачи"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: text
+                  remarks: "Описание"
+              - column:
+                  name: project_id
+                  type: uuid
+                  remarks: "ID проекта"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: assignee_id
+                  type: uuid
+                  remarks: "ID исполнителя"
+              - column:
+                  name: reporter_id
+                  type: uuid
+                  remarks: "ID автора"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: task_status_code
+                  type: int
+                  remarks: "Статус задачи"
+                  defaultValue: "1"
+              - column:
+                  name: task_type_code
+                  type: int
+                  remarks: "Тип задачи"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: task_priority_code
+                  type: int
+                  remarks: "Приоритет"
+                  defaultValue: "1"
+              - column:
+                  name: parent_task_id
+                  type: uuid
+                  remarks: "ID задачи-родителя"
+              - column:
+                  name: hierarchy_level
+                  type: int
+                  remarks: "Уровень иерархии"
+                  defaultValue: '1'
+              - column:
+                  name: due_date
+                  type: timestamp with time zone
+                  remarks: "Дедлайн"
+              - column:
+                  name: start_date
+                  type: timestamp with time zone
+                  remarks: "Дата начала задачи"
+              - column:
+                  name: completed_at
+                  type: timestamp with time zone
+                  remarks: "Дата завершения"
+              - column:
+                  name: story_points
+                  type: int
+                  remarks: "Оценка (стори поинты)"
+              - column:
+                  name: estimated_hours
+                  type: decimal(5,2)
+                  remarks: "Оценка в часах"
+              - column:
+                  name: actual_hours
+                  type: decimal(5,2)
+                  remarks: "Потрачено часов"
+                  defaultValue: '0'
+              - column:
+                  name: resolution
+                  type: varchar(100)
+                  remarks: "Решение"
+              - column:
+                  name: resolution_date
+                  type: timestamp with time zone
+                  remarks: "Дата решения"
+
+              - column:
+                  name: created_at
+                  type: timestamp
+                  remarks: "Дата создания"
+                  defaultValueComputed: now()
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  remarks: "Дата обновления"
+              - column:
+                  name: created_by
+                  type: uuid
+                  remarks: "Кем создано"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_by
+                  type: uuid
+                  remarks: "Кем обновлено"
+              - column:
+                  name: version
+                  type: int
+                  remarks: "Версия"
+                  defaultValue: '1'
+              - column:
+                  name: deleted_at
+                  type: timestamp with time zone
+                  remarks: "Дата удаления"
+
+        - addForeignKeyConstraint:
+            baseTableSchemaName: task_service_schema
+            baseTableName: task
+            baseColumnNames: parent_task_id
+            referencedTableSchemaName: task_service_schema
+            referencedTableName: task
+            referencedColumnNames: task_id
+            constraintName: fk_task_parent_task
+
+        - createTable:
+            schemaName: task_service_schema
+            tableName: sprint
+            remarks: "Спринты"
+            columns:
+              - column:
+                  name: sprint_id
+                  type: uuid
+                  remarks: "ID спринта"
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: task_sprint_pk
+                    nullable: false
+              - column:
+                  name: sprint_name
+                  type: varchar(255)
+                  remarks: "Название спринта"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: start_date
+                  type: timestamp
+                  remarks: "Дата старта"
+              - column:
+                  name: end_date
+                  type: timestamp
+                  remarks: "Дата окончания"
+              - column:
+                  name: created_at
+                  type: timestamp
+                  remarks: "Дата создания"
+                  defaultValueComputed: now()
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  remarks: "Дата обновления"

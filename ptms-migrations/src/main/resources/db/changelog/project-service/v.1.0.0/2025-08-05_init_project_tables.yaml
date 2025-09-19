@@ -1,0 +1,105 @@
+databaseChangeLog:
+  - changeSet:
+      id: init_project_table
+      author: vlokky
+      changes:
+        - createTable:
+            schemaName: project_service_schema
+            tableName: project
+            columns:
+              - column:
+                  name: project_id
+                  type: uuid
+                  remarks: "ID проекта"
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    nullable: false
+                    primaryKeyName: project_pk
+                    primaryKey: true
+              - column:
+                  name: project_name
+                  type: varchar(100)
+                  remarks: "Название проекта"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: text
+                  remarks: "Описание проекта"
+              - column:
+                  name: owner_id
+                  type: uuid
+                  remarks: "Владелец проекта"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: project_status
+                  type: int
+                  remarks: "Статус проекта"
+                  defaultValue: '1'
+              - column:
+                  name: visibility
+                  type: int
+                  remarks: "Видимость (1 - закрытый, 2-открытый"
+                  defaultValue: '1'
+              - column:
+                  name: project_priority
+                  type: int
+                  remarks: "Приоритет(1 - высокий, 2 - средний, 3- низкий)"
+                  defaultValue: '2'
+              - column:
+                  name: start_date
+                  type: timestamp
+                  remarks: "Дата начала проекта"
+              - column:
+                  name: deadline
+                  type: timestamp
+                  remarks: "Дата завершения проекта"
+              - column:
+                  name: estimated_hours
+                  type: decimal(8,2)
+                  remarks: "Кол-во часов запланировано"
+              - column:
+                  name: actual_hours
+                  type: decimal(8,2)
+                  remarks: "Фактически часов потрачено"
+              - column:
+                  name: budget
+                  type: decimal(12,2)
+                  remarks: "Бюджет"
+              - column:
+                  name: allow_public_links
+                  type: boolean
+                  remarks: "Допустимость публичных связей (ДА/НЕТ)"
+                  defaultValue: 'false'
+              - column:
+                  name: required_task_approval
+                  type: boolean
+                  remarks: "Требуется подтвержение всех задач (ДА/НЕТ)"
+                  defaultValue: 'false'
+              - column:
+                  name: created_at
+                  type: timestamp
+                  remarks: "Дата создания"
+                  defaultValueComputed: now()
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  remarks: "Дата обновления"
+              - column:
+                  name: created_by
+                  type: uuid
+                  remarks: "Кем создан"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_by
+                  type: uuid
+                  remarks: "Кем обновлено"
+              - column:
+                  name: version
+                  type: int
+                  defaultValue: '1'
+              - column:
+                  name: deleted_at
+                  type: timestamp with time zone

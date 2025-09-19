@@ -1,0 +1,56 @@
+databaseChangeLog:
+  - changeSet:
+      id: init_outbox_event_table
+      author: vlokky
+      changes:
+        - createTable:
+            tableName: outbox_event
+            schemaName: user_details_service_schema
+            remarks: "События OUTBOX"
+            columns:
+              - column:
+                  name: event_id
+                  type: UUID
+                  remarks: "ID события"
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_outbox_events
+              - column:
+                  name: event_type
+                  type: varchar(100)
+                  remarks: "Тип события"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: aggregate_type
+                  type: varchar(50)
+                  remarks: "Тип агрегации события"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: aggregate_id
+                  type: UUID
+                  remarks: "ID агрегации события"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: event_data
+                  type: JSONB
+                  remarks: "Данные по событию"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp with time zone
+                  defaultValueComputed: now()
+              - column:
+                  name: processed_at
+                  type: timestamp with time zone
+                  remarks: "Дата и время выполнения"
+              - column:
+                  name: retry_count
+                  type: int
+                  remarks: "Кол-во повторов"
+                  defaultValue: '0'

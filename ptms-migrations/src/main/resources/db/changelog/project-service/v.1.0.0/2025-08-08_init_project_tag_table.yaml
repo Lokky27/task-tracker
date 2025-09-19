@@ -1,0 +1,65 @@
+databaseChangeLog:
+  - changeSet:
+      id: init_project_tag_table
+      author: vlokky
+      changes:
+        - createTable:
+            schemaName: project_service_schema
+            tableName: project_tag
+            remarks: "Тэги для проектов"
+            columns:
+              - column:
+                  name: tag_id
+                  type: uuid
+                  remarks: "ID тэга"
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_project_tag
+                    nullable: false
+                  defaultValueComputed: gen_random_uuid()
+              - column:
+                  name: project_id
+                  type: uuid
+                  remarks: "ID проекта"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: tag_name
+                  type: varchar(50)
+                  remarks: "Название тэга"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: tag_color
+                  type: varchar(7)
+                  remarks: "Цвет тэга"
+                  defaultValue: '#007bff'
+              - column:
+                  name: description
+                  type: text
+                  remarks: "Описание тэга"
+              - column:
+                  name: created_at
+                  type: timestamp with time zone
+                  remarks: "Дата создания"
+                  defaultValueComputed: now()
+              - column:
+                  name: created_by
+                  type: uuid
+                  remarks: "Кем создан"
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableSchemaName: project_service_schema
+            baseTableName: project_tag
+            baseColumnNames: project_id
+            referencedTableSchemaName: project_service_schema
+            referencedTableName: project
+            referencedColumnNames: project_id
+            constraintName: fk_project_tag_project
+            onDelete: CASCADE
+        - addUniqueConstraint:
+            schemaName: project_service_schema
+            tableName: project_tag
+            columnNames: project_id, tag_name

@@ -1,5 +1,0 @@
-databaseChangeLog:
-  - include:
-      file: db/changelog/project-service/v.1.0.0/2025-07-31_init_schema.yaml
-  - include:
-      file: db/changelog/project-service/v.1.0.0/2025-08-05_init_project_tables.yaml

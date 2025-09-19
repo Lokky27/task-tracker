@@ -1,7 +1,0 @@
-# Шаблон для настройки Liquibase
-spring:
-  liquibase:
-    enabled: true
-    change-log: classpath:/db/changelog/${spring.application.name}/master-changelog.yaml
-    contexts: default
-    default-schema: public

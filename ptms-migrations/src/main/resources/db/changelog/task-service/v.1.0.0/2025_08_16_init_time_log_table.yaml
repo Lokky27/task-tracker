@@ -1,0 +1,67 @@
+databaseChangeLog:
+  - changeSet:
+      id: init_time_log_table
+      author: vlokky
+      changes:
+        - createTable:
+            schemaName: task_service_schema
+            tableName: time_log
+            remarks: "Логирование времени"
+            columns:
+              - column:
+                  name: log_id
+                  type: uuid
+                  remarks: "ID лога"
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_time_log
+                    nullable: false
+                  defaultValueComputed: gen_random_uuid()
+              - column:
+                  name: task_id
+                  type: uuid
+                  remarks: "ID задачи"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: uuid
+                  remarks: "ID пользователя"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: hours_logged
+                  type: decimal(4,2)
+                  remarks: "Часов залогированно"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: text
+                  remarks: "Описание"
+              - column:
+                  name: work_date
+                  type: date
+                  remarks: "Дата работы"
+                  constraints:
+                    nullable: false
+                  defaultValueComputed: now()
+              - column:
+                  name: created_at
+                  type: timestamp with time zone
+                  remarks: "Дата создания"
+                  defaultValueComputed: now()
+              - column:
+                  name: created_by
+                  type: uuid
+                  remarks: "Кем создано"
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            constraintName: fk_time_log_task
+            baseTableSchemaName: task_service_schema
+            baseTableName: time_log
+            baseColumnNames: task_id
+            referencedTableSchemaName: task_service_schema
+            referencedTableName: task
+            referencedColumnNames: task_id

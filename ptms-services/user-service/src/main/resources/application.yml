@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: user-service
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/task_tracker_db}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:postgres}
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: user_details_service_schema
+
+  main:
+    allow-bean-definition-overriding: true
+
+  liquibase:
+    enabled: false
+
+logging:
+  level:
+    liquibase: DEBUG
+    org.springframework.web: DEBUG
+server:
+  port: 8081

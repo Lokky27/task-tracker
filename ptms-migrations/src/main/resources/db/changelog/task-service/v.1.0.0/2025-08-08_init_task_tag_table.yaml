@@ -1,0 +1,53 @@
+databaseChangeLog:
+  - changeSet:
+      id: init_task_tag_table
+      author: vlokky
+      changes:
+        - createTable:
+            schemaName: task_service_schema
+            tableName: task_tag
+            remarks: "Тэги для задач"
+            columns:
+              - column:
+                  name: task_id
+                  type: uuid
+                  remarks: "ID задачи"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: tag_name
+                  type: varchar(50)
+                  remarks: "Название тэга"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: tag_color
+                  type: varchar(7)
+                  remarks: "Цвет тэга"
+                  defaultValue: '#007bff'
+              - column:
+                  name: assigned_at
+                  type: timestamp with time zone
+                  remarks: "Дата присвоения"
+                  defaultValueComputed: now()
+              - column:
+                  name: assigned_by
+                  type: uuid
+                  remarks: "Кем присвоен"
+                  constraints:
+                    nullable: false
+
+        - addPrimaryKey:
+            schemaName: task_service_schema
+            tableName: task_tag
+            columnNames: task_id, tag_name
+            constraintName: pk_task_tag
+        - addForeignKeyConstraint:
+            baseTableSchemaName: task_service_schema
+            baseTableName: task_tag
+            baseColumnNames: task_id
+            referencedTableSchemaName: task_service_schema
+            referencedTableName: task
+            referencedColumnNames: task_id
+            constraintName: fk_task_tag_task
+            onDelete: CASCADE

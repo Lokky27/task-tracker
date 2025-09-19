@@ -1,0 +1,64 @@
+databaseChangeLog:
+  - changeSet:
+      id: init_project_history_table
+      author: vlokky
+      changes:
+        - createTable:
+            schemaName: project_service_schema
+            tableName: project_history
+            remarks: "История изменений проектов"
+            columns:
+              - column:
+                  name: project_history_id
+                  type: uuid
+                  remarks: "ID истории"
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_project_history
+                  defaultValueComputed: gen_random_uuid()
+              - column:
+                  name: project_id
+                  type: uuid
+                  remarks: "ID проекта"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: field_name
+                  type: varchar(100)
+                  remarks: "Название поля"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: old_value
+                  type: text
+                  remarks: "Старое значение"
+              - column:
+                  name: new_value
+                  type: text
+                  remarks: "Новое значение"
+              - column:
+                  name: change_type
+                  type: varchar
+                  remarks: "Тип изменения"
+                  defaultValue: 'UPDATE'
+              - column:
+                  name: changed_by
+                  type: uuid
+                  remarks: "Кем изменено"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: change_at
+                  type: timestamp with time zone
+                  remarks: "Дата изменения"
+                  defaultValueComputed: now()
+
+        - addForeignKeyConstraint:
+            baseTableSchemaName: project_service_schema
+            baseTableName: project_history
+            baseColumnNames: project_id
+            referencedTableSchemaName: project_service_schema
+            referencedTableName: project
+            referencedColumnNames: project_id
+            constraintName: fk_project_history_project

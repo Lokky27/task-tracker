@@ -1,0 +1,52 @@
+databaseChangeLog:
+  - changeSet:
+      id: init_team_member_table
+      author: vlokky
+      changes:
+        - createTable:
+            schemaName: user_details_service_schema
+            tableName: team_member
+            remarks: "Участники команд"
+            columns:
+              - column:
+                  name: team_id
+                  type: uuid
+                  remarks: "ID команды"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_profile_id
+                  type: uuid
+                  remarks: "ID профиля пользователя"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: member_role
+                  type: int
+                  remarks: "Роль члена команды"
+                  defaultValue: '1'
+              - column:
+                  name: joined_at
+                  type: timestamp
+                  remarks: "Дата вступления в команду"
+                  defaultValueComputed: now()
+              - column:
+                  name: left_at
+                  type: timestamp
+                  remarks: "Дата исключения из команды"
+        - addPrimaryKey:
+            tableName: team_member
+            schemaName: user_details_service_schema
+            constraintName: pk_team_member
+            columnNames: team_id, user_profile_id
+        - addForeignKeyConstraint:
+            constraintName: fk_team_member_team
+            baseTableName: team_member
+            baseColumnNames: team_id
+            baseTableSchemaName: user_details_service_schema
+            referencedTableName: team
+            referencedColumnNames: team_id
+            referencedTableSchemaName: user_details_service_schema
+            deleteCascade: true
+
+

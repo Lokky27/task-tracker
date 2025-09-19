@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: project-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/task_tracker_db
+    username: postgres
+    password: postgres
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        default_schema: project_service_schema
+
+  liquibase:
+    change-log: classpath:/db/changelog/task-service/task_service_master_changelog.yaml
+    enabled: true
+    default-schema: project_service_schema
+
+  main:
+    allow-bean-definition-overriding: true
+
+logging:
+  level:
+    liquibase: DEBUG
+server:
+  port: 8484

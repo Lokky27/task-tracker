@@ -1,0 +1,89 @@
+databaseChangeLog:
+  - changeSet:
+      id: init_sprint_table
+      author: vlokky
+      changes:
+        - createTable:
+            schemaName: task_service_schema
+            tableName: spring
+            remarks: "Спринты"
+            columns:
+              - column:
+                  name: sprint_id
+                  type: uuid
+                  remarks: "ID спринта"
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_sprint_id
+              - column:
+                  name: project_id
+                  type: uuid
+                  remarks: "ID проекта"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: sprint_name
+                  type: varchar(255)
+                  remarks: "Название спринта"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: goal
+                  type: text
+                  remarks: "Цель"
+              - column:
+                  name: start_date
+                  type: timestamp with time zone
+                  remarks: "Дата начала"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: end_date
+                  type: timestamp with time zone
+                  remarks: "Дата окончания"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status_code
+                  type: int
+                  remarks: "Код статуса спринта"
+                  defaultValue: '1'
+              - column:
+                  name: planning_story_points
+                  type: int
+                  remarks: "Планируемые стори-поинты"
+                  defaultValue: '0'
+              - column:
+                  name: completed_story_points
+                  type: int
+                  remarks: "Завершенные стори-поинты"
+                  defaultValue: '0'
+              - column:
+                  name: created_at
+                  type: timestamp with time zone
+                  remarks: "Дата создания"
+                  defaultValueComputed: now()
+              - column:
+                  name: updated_at
+                  type: timestamp with time zone
+                  remarks: "Дата обновления"
+                  defaultValue: now()
+              - column:
+                  name: created_by
+                  type: uuid
+                  remarks: "Кем создано"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_by
+                  type: uuid
+                  remarks: "Кем обновлено"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: version
+                  type: int
+                  remarks: "Версия"
+                  defaultValue: '1'

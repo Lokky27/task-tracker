@@ -3,6 +3,8 @@ $$
     BEGIN
         -- Создание схем для каждого микросервиса
         CREATE SCHEMA IF NOT EXISTS user_details_service_schema; -- Для user-service
+        CREATE SCHEMA IF NOT EXISTS keycloak_schema; -- Для Keycloak
+        GRANT ALL ON SCHEMA keycloak_schema TO postgres;
         CREATE SCHEMA IF NOT EXISTS team_service_schema; -- Для team-service
         CREATE SCHEMA IF NOT EXISTS project_service_schema; -- Для project-service
         CREATE SCHEMA IF NOT EXISTS task_service_schema; -- Для task-service

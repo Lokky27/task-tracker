@@ -41,18 +41,18 @@ services:
     stdin_open: true
 
   keycloak:
-    image: quay.io/keycloak/keycloak:latest
+    image: quay.io/keycloak/keycloak:24.0.5
     container_name: task_tracker_keycloak
     command:
       - "start-dev"
       - "--import-realm"
     environment:
       KC_DB: postgres
-      KC_DB_URL_HOST: postgres
-      KC_DB_URL_DATABASE: task_tracker_db
+      KC_DB_URL: jdbc:postgresql://postgres:5432/task_tracker_db
+      KC_DB_SCHEMA: keycloak_schema
       KC_DB_USERNAME: postgres
       KC_DB_PASSWORD: postgres
-      KC_HOSTNAME_URL: http://localhost:8080
+      KC_HOSTNAME_URL: http://localhost:8080/task_tracker_db
       KC_HOSTNAME_ADMIN_URL: http://localhost:8080
       KC_HOSTNAME_STRICT_BACKCHANNEL: true
       KC_HTTP_RELATIVE_PATH: /
@@ -64,7 +64,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     healthcheck:
-      test: ['CMD-SHELL', '[ -f /tmp/HealthCheck.java ] || echo "public class HealthCheck { public static void main(String[] args) throws java.lang.Throwable { System.exit(java.net.HttpURLConnection.HTTP_OK == ((java.net.HttpURLConnection)new java.net.URL(args[0]).openConnection()).getResponseCode() ? 0 : 1); } }" > /tmp/HealthCheck.java && java /tmp/HealthCheck.java http://localhost:8080/auth/health/live']
+      test: [ 'CMD-SHELL', '[ -f /tmp/HealthCheck.java ] || echo "public class HealthCheck { public static void main(String[] args) throws java.lang.Throwable { System.exit(java.net.HttpURLConnection.HTTP_OK == ((java.net.HttpURLConnection)new java.net.URL(args[0]).openConnection()).getResponseCode() ? 0 : 1); } }" > /tmp/HealthCheck.java && java /tmp/HealthCheck.java http://localhost:8080/auth/health/live' ]
       interval: 5s
       timeout: 5s
       retries: 20
@@ -73,7 +73,8 @@ services:
     volumes:
       - ./keycloak/:/opt/keycloak/data/import/
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     networks:
       - tracker-network
     restart: unless-stopped
@@ -89,6 +90,7 @@ services:
       - "27017:27017"
     volumes:
       - mongodb_data:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     networks:
       - tracker-network
     healthcheck:

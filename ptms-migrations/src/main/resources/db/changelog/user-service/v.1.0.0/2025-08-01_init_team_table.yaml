@@ -1,0 +1,70 @@
+databaseChangeLog:
+  - changeSet:
+      id: init_team_table
+      author: vlokky
+      changes:
+        - createTable:
+            tableName: team
+            schemaName: user_details_service_schema
+            remarks: "Команда"
+            columns:
+              - column:
+                  name: team_id
+                  type: uuid
+                  remarks: "ID команды"
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_team
+                    nullable: false
+              - column:
+                  name: team_name
+                  type: varchar(255)
+                  remarks: "Название команды"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: text
+                  remarks: "Описание команды"
+              - column:
+                  name: max_members
+                  type: integer
+                  remarks: "Максимальное кол-во членов"
+                  defaultValue: '50'
+              - column:
+                  name: is_active
+                  type: boolean
+                  remarks: "Активна команда (Да/Нет)"
+                  defaultValue: 'true'
+              - column:
+                  name: created_at
+                  type: timestamp
+                  remarks: "Дата создания"
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  remarks: "Дата обновления"
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_by
+                  type: uuid
+                  remarks: "Кем создано"
+              - column:
+                  name: updated_by
+                  type: uuid
+                  remarks: "Кем обновлено"
+              - column:
+                  name: version
+                  type: int
+                  remarks: "Версия"
+                  defaultValue: '1'
+              - column:
+                  name: deleted_at
+                  type: timestamp
+                  remarks: "Дата удаления"

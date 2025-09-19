@@ -1,0 +1,64 @@
+
+spring:
+  application:
+    name: ptms-migrations-runner
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/task_tracker_db}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+
+  liquibase:
+    enabled: true
+    change-log: ${LIQUIBASE_CHANGELOG:classpath:/db/changelog/master-all-services.yaml}
+    contexts: ${LIQUIBASE_CONTEXTS:default}
+    default-schema: ${LIQUIBASE_SCHEMA:public}
+    liquibase-schema: ${LIQUIBASE_SCHEMA:public}
+    drop-first: ${LIQUIBASE_DROP_FIRST:false}
+    test-rollback-on-update: ${LIQUIBASE_TEST_ROLLBACK:false}
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+  main:
+    web-application-type: none
+    banner-mode: console
+
+logging:
+  level:
+    root: INFO
+    liquibase: INFO
+    liquibase.changelog: INFO
+    liquibase.database: DEBUG
+    org.postgresql: WARN
+    com.zaxxer.hikari: WARN
+
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+  file:
+    name: ${LOG_FILE:logs/ptmsDbMigrationRunner.log}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,liquibase,metrics
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: always
+      show-components: always
+    liquibase:
+      enabled: true
+  info:
+    env:
+      enabled: true
+    java:
+      enabled: true
+    os:
+      enabled: true

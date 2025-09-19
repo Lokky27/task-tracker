@@ -1,0 +1,79 @@
+databaseChangeLog:
+  - changeSet:
+      id: init_public_link_table
+      author: vlokky
+      changes:
+        - createTable:
+            schemaName: project_service_schema
+            tableName: public_link
+            remarks: "Публичные ссылки"
+            columns:
+              - column:
+                  name: link_id
+                  type: uuid
+                  remarks: "ID публичной ссылки"
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_public_link
+                  defaultValueComputed: gen_random_uuid()
+              - column:
+                  name: project_id
+                  type: uuid
+                  remarks: "ID проекта"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: token
+                  type: varchar(255)
+                  remarks: "Токен"
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: access_level_code
+                  type: int
+                  remarks: "Код уровня доступа"
+              - column:
+                  name: password_hash
+                  type: varchar(255)
+                  remarks: "Хэш пароля"
+              - column:
+                  name: max_uses
+                  type: int
+                  remarks: "Макстмальное кол-во использований"
+              - column:
+                  name: used_count
+                  type: int
+                  remarks: "Кол-во использований"
+                  defaultValue: '0'
+              - column:
+                  name: expires_at
+                  type: timestamp with time zone
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp with time zone
+                  remarks: "Дата создания"
+                  defaultValueComputed: now()
+              - column:
+                  name: created_by
+                  type: uuid
+                  remarks: "Кем создано"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_accessed_at
+                  type: timestamp with time zone
+                  remarks: "Последняя дата применения"
+
+        - addForeignKeyConstraint:
+            baseTableSchemaName: project_service_schema
+            baseTableName: public_link
+            baseColumnNames: project_id
+            referencedTableSchemaName: project_service_schema
+            referencedTableName: project
+            referencedColumnNames: project_id
+            constraintName: fk_public_link_project
+            onDelete: CASCADE

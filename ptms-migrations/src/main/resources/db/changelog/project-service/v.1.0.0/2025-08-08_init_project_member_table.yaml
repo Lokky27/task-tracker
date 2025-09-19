@@ -1,0 +1,64 @@
+databaseChangeLog:
+  - changeSet:
+      id: init_project_member_table
+      author: vlokky
+      changes:
+        - createTable:
+            schemaName: project_service_schema
+            tableName: project_member
+            remarks: "Участники проекта"
+            columns:
+              - column:
+                  name: project_id
+                  type: uuid
+                  remarks: "ID проекта"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: uuid
+                  remarks: "ID участника"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role_code
+                  type: int
+                  remarks: "Код роли участника"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: join_at
+                  type: timestamp with time zone
+                  remarks: "Дата включения в команду"
+                  defaultValueComputed: now()
+              - column:
+                  name: left_at
+                  type: timestamp with time zone
+                  remarks: "Дата исключения из команды"
+              - column:
+                  name: invited_by
+                  type: uuid
+                  remarks: "Участник, прегласивший пользователя"
+              - column:
+                  name: invitation_accepted_by
+                  type: timestamp with timezone
+                  remarks: "Дата принятия приглашения"
+              - column:
+                  name: custom_permissions
+                  type: jsonb
+        - addPrimaryKey:
+            schemaName: project_service_schema
+            tableName: project_member
+            columnNames: project_id, user_id
+            constraintName: pk_project_member
+        - addForeignKeyConstraint:
+            baseTableSchemaName: project_service_schema
+            baseTableName: project_member
+            baseColumnNames: project_id
+            referencedTableSchemaName: project_service_schema
+            referencedTableName: project
+            referencedColumnNames: project_id
+            constraintName: fk_project_member_project
+            onDelete: CASCADE
+
+

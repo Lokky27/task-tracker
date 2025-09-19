@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: init_task_history_table
+      author: vlokky
+      changes:
+        - sql:
+            dbms: postgresql
+            endDelimiter: GO
+            splitStatements: true
+            sql: |
+              CREATE TABLE task_service_schema.task_history (
+                history_id UUID DEFAULT gen_random_uuid(),
+                task_id UUID NOT NULL,
+                field_name VARCHAR(100) NOT NULL,
+                old_value TEXT,
+                new_value TEXT,
+                change_type VARCHAR(20) DEFAULT 'UPDATE',
+                changed_by UUID NOT NULL,
+                changed_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+                PRIMARY KEY (history_id, changed_at),
+                FOREIGN KEY (task_id) REFERENCES task_service_schema.task(task_id)
+              ) PARTITION BY RANGE (changed_at);
+              
+              CREATE TABLE task_service_schema.task_history_2024_01
+              PARTITION OF task_service_schema.task_history
+              FOR VALUES FROM('2024-01-01') TO ('2024-02-01');
+              
+              CREATE TABLE task_service_schema.task_history_2024_02
+              PARTITION OF task_service_schema.task_history
+              FOR VALUES FROM('2024-02-01') TO ('2024-03-01');

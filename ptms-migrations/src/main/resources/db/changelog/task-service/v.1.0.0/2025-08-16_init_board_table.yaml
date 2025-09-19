@@ -1,0 +1,72 @@
+databaseChangeLog:
+  - changeSet:
+      id: init_board_table
+      author: vlokky
+      changes:
+        - createTable:
+            schemaName: task_service_schema
+            tableName: board
+            remarks: "Доски"
+            columns:
+              - column:
+                  name: board_id
+                  type: uuid
+                  remarks: "ID доски"
+                  constraints:
+                    nullable: false
+                    primaryKeyName: pk_board
+                    primaryKey: true
+                  defaultValueComputed: gen_random_uuid()
+              - column:
+                  name: project_id
+                  type: uuid
+                  remarks: "ID проекта"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: board_name
+                  type: varchar(255)
+                  remarks: "Название доски"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: text
+                  remarks: "Описание"
+              - column:
+                  name: columns_config
+                  type: jsonb
+                  remarks: "Конфигурация колонок"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_default
+                  type: boolean
+                  remarks: "По умолчанию (Да/Нет)"
+                  defaultValue: 'false'
+              - column:
+                  name: is_active
+                  type: boolean
+                  remarks: "Активна (Да/Нет)"
+                  defaultValue: 'true'
+              - column:
+                    name: created_at
+                    type: timestamp with time zone
+                    remarks: "Дата создания"
+                    defaultValueComputed: now()
+              - column:
+                  name: updated_at
+                  type: timestamp with time zone
+                  remarks: "Дата обновления"
+                  defaultValueComputed: now()
+              - column:
+                  name: created_by
+                  type: uuid
+                  remarks: "Кем создано"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_by
+                  type: uuid
+                  remarks: "Кем обновлено"
+
