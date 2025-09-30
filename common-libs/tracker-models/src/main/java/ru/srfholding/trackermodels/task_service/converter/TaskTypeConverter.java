@@ -1,10 +1,10 @@
-package ru.srfholding.trackermodels.converter;
+package ru.srfholding.trackermodels.task_service.converter;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
-import ru.srfholding.trackermodels.converter.constant.TaskType;
+import ru.srfholding.trackermodels.task_service.constant.TaskType;
 
-import static ru.srfholding.trackermodels.converter.constant.TaskType.findTaskTypeByCode;
+import static ru.srfholding.trackermodels.task_service.constant.TaskType.findTaskTypeByCode;
 
 /**
  * Конвертер для типа задач

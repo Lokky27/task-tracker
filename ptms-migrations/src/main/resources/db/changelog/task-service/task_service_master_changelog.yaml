@@ -6,7 +6,7 @@ databaseChangeLog:
   - include:
       file: db/changelog/task-service/v.1.0.0/2025-08-08_init_task_tag_table.yaml
   - include:
-      file: db/changelog/task-service/v.1.0.0/2025-08-16_init_spring_table.yaml
+      file: db/changelog/task-service/v.1.0.0/2025-08-16_init_sprint_table.yaml
   - include:
       file: db/changelog/task-service/v.1.0.0/2025-08-16_init_sprint_task_table.yaml
   - include:
@@ -17,3 +17,5 @@ databaseChangeLog:
       file: db/changelog/task-service/v.1.0.0/2025_08_16_init_time_log_table.yaml
   - include:
       file: db/changelog/task-service/v.1.0.0/2025-08-16_init_outbox_events.yaml
+  - include:
+      file: db/changelog/task-service/v.1.0.0/2025_08-24_add_version_column_to_board_table.yaml

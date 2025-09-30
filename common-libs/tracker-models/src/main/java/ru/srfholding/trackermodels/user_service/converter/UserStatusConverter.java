@@ -1,10 +1,10 @@
-package ru.srfholding.trackermodels.converter;
+package ru.srfholding.trackermodels.user_service.converter;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
-import ru.srfholding.trackermodels.converter.constant.UserStatus;
+import ru.srfholding.trackermodels.user_service.constant.UserStatus;
 
-import static ru.srfholding.trackermodels.converter.constant.UserStatus.getRoleByCode;
+import static ru.srfholding.trackermodels.user_service.constant.UserStatus.getRoleByCode;
 
 
 /**

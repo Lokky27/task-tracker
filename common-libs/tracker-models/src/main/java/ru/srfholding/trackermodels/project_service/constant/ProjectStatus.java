@@ -1,4 +1,4 @@
-package ru.srfholding.trackermodels.converter.constant;
+package ru.srfholding.trackermodels.project_service.constant;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +29,6 @@ public enum ProjectStatus {
         return Arrays.stream(values())
                 .filter(status -> code.equals(status.getCode()))
                 .findAny()
-                .orElseThrow(() -> new IllegalArgumentException("Значения по коду " + " не найдено"));
+                .orElse(null);
     }
 }

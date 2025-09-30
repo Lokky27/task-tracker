@@ -8,7 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import ru.srfholding.trackermodels.converter.constant.TaskType;
+import ru.srfholding.trackermodels.task_service.constant.TaskType;
 
 import java.time.LocalDate;
 import java.util.UUID;

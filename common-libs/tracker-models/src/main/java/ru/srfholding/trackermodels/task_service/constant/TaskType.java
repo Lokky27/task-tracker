@@ -1,4 +1,4 @@
-package ru.srfholding.trackermodels.converter.constant;
+package ru.srfholding.trackermodels.task_service.constant;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

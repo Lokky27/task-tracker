@@ -11,3 +11,5 @@ databaseChangeLog:
       file: db/changelog/user-service/v.1.0.0/2025-08-01_init_user_preferences_table.yaml
   - include:
       file: db/changelog/user-service/v.1.0.0/2025-08-01_init_outbox_events_table.yaml
+  - include:
+      file: db/changelog/user-service/v.1.0.0/2025-09-21_add_foreign_key_to_team_member_table.yaml

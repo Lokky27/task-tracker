@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import ru.srfholding.trackerdto.task.response.TaskResult;
 import ru.srfholding.trackerdto.users.response.UserResult;
-import ru.srfholding.trackermodels.converter.constant.ProjectStatus;
+import ru.srfholding.trackermodels.project_service.constant.ProjectStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;

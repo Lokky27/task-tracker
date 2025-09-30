@@ -1,18 +1,18 @@
-package ru.srfholding.trackermodels.converter;
+package ru.srfholding.trackermodels.task_service.converter;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
-import ru.srfholding.trackermodels.converter.constant.StatusType;
+import ru.srfholding.trackermodels.task_service.constant.TaskStatusType;
 
-import static ru.srfholding.trackermodels.converter.constant.StatusType.findStatusByCode;
+import static ru.srfholding.trackermodels.task_service.constant.TaskStatusType.findStatusByCode;
 
 /**
  * Конвертер статуса задач
  */
 @Converter
-public class TaskStatusConverter implements AttributeConverter<StatusType, Integer> {
+public class TaskStatusConverter implements AttributeConverter<TaskStatusType, Integer> {
     @Override
-    public Integer convertToDatabaseColumn(StatusType attribute) {
+    public Integer convertToDatabaseColumn(TaskStatusType attribute) {
         if (attribute == null) {
             throw new IllegalArgumentException("Статус задачи не может быть пустым!");
         }
@@ -21,8 +21,8 @@ public class TaskStatusConverter implements AttributeConverter<StatusType, Integ
     }
 
     @Override
-    public StatusType convertToEntityAttribute(Integer code) {
-        StatusType statusByCode = findStatusByCode(code);
+    public TaskStatusType convertToEntityAttribute(Integer code) {
+        TaskStatusType statusByCode = findStatusByCode(code);
         if (statusByCode == null) {
             throw new IllegalArgumentException(String.format("По коду %d статус не существует в системе", code));
         }

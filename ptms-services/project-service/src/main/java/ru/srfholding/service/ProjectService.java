@@ -7,7 +7,7 @@ import ru.srfholding.trackerdto.project.response.ProjectResult;
 /**
  * Сервис управления проектами
  */
-public interface ProjectService {
+public interface ProjectService  {
 
     /**
      * Создание нового проекта

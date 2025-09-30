@@ -1,4 +1,4 @@
-package ru.srfholding.trackermodels.converter.constant;
+package ru.srfholding.trackermodels.task_service.constant;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,7 @@ import java.util.List;
  */
 @Getter
 @RequiredArgsConstructor
-public enum StatusType {
+public enum TaskStatusType {
     NEW(1, "Новый", List.of(1, 8, 9)),
     OPEN(2, "Открыт", List.of(3, 8, 9)),
     IN_PROGRESS(3, "В разарботке", List.of(4, 7, 8, 9, 11)),
@@ -30,7 +30,7 @@ public enum StatusType {
     private final String description;
     private final List<Integer> nextStatusCodes;
 
-    public static StatusType findStatusByCode(Integer code) {
+    public static TaskStatusType findStatusByCode(Integer code) {
         if (code == null) {
             throw new IllegalArgumentException("Код статуса не может быть пустым!");
         }

@@ -5,9 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import ru.srfholding.trackermodels.converter.constant.PriorityType;
-import ru.srfholding.trackermodels.converter.constant.StatusType;
-import ru.srfholding.trackermodels.converter.constant.TaskType;
+import ru.srfholding.trackermodels.task_service.constant.TaskPriorityType;
+import ru.srfholding.trackermodels.task_service.constant.TaskStatusType;
+import ru.srfholding.trackermodels.task_service.constant.TaskType;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -43,7 +43,7 @@ public class TaskResult {
     /**
      * Статус задачи
      */
-    StatusType statusCode;
+    TaskStatusType statusCode;
     /**
      * Тип задачи
      */
@@ -51,7 +51,7 @@ public class TaskResult {
     /**
      * Приоритет
      */
-    PriorityType priority;
+    TaskPriorityType priority;
     /**
      * Проект к которому принадлежит задача
      */

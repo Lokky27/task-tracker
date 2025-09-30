@@ -5,7 +5,7 @@ databaseChangeLog:
       changes:
         - createTable:
             schemaName: task_service_schema
-            tableName: spring
+            tableName: sprint
             remarks: "Спринты"
             columns:
               - column:

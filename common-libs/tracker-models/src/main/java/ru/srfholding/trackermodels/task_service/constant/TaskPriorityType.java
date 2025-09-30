@@ -1,4 +1,4 @@
-package ru.srfholding.trackermodels.converter.constant;
+package ru.srfholding.trackermodels.task_service.constant;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,7 @@ import java.util.Arrays;
  */
 @Getter
 @RequiredArgsConstructor
-public enum PriorityType {
+public enum TaskPriorityType {
     TRIVIAL(1, "Тривиальный"),
     MINOR(2, "Минорный"),
     MAJOR(3, "Мажорный"),
@@ -25,7 +25,7 @@ public enum PriorityType {
      * @param code - код приоритета
      * @return приоритет
      */
-    public static PriorityType findPriorityByCode(Integer code) {
+    public static TaskPriorityType findPriorityByCode(Integer code) {
         return Arrays.stream(values())
                 .filter(priority -> code.equals(priority.getCode()))
                 .findAny()

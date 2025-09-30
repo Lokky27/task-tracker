@@ -14,9 +14,7 @@ spring:
         default_schema: project_service_schema
 
   liquibase:
-    change-log: classpath:/db/changelog/task-service/task_service_master_changelog.yaml
-    enabled: true
-    default-schema: project_service_schema
+    enabled: false
 
   main:
     allow-bean-definition-overriding: true
