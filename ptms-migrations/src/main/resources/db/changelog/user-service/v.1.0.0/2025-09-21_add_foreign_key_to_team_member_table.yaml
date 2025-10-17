@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: add_foreign_key_to_team_member_table
+      author: vlokky
+      changes:
+        - addForeignKeyConstraint:
+            constraintName: fk_team_member_user_profile
+            baseTableSchemaName: user_details_service_schema
+            baseTableName: team_member
+            baseColumnNames: user_profile_id
+            referencedTableSchemaName: user_details_service_schema
+            referencedTableName: user_profile
+            referencedColumnNames: user_profile_id

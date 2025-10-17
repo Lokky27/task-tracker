@@ -1,0 +1,23 @@
+spring:
+  liquibase:
+    enabled: false
+    change-log: classpath:db/changelog/master-all-services.yaml
+    default-schema: public
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+
+  main:
+    banner-mode: off
+    lazy-initialization: true
+logging:
+  level:
+    liquibase: INFO
+    org.testcontainers: INFO
+    ru.holding.srf: DEBUG
+    root: warn

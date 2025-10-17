@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: add_version_column_to_board_table
+      author: vlokky
+      changes:
+        - addColumn:
+            schemaName: task_service_schema
+            tableName: board
+            columns:
+              - column:
+                  name: version
+                  type: int
+                  remarks: "Версия"
+                  defaultValue: '1'
