@@ -1,1 +1,0 @@
-CREATE SCHEMA IF NOT EXISTS user_details_service_schema;

@@ -1,8 +1,11 @@
 package ru.srfholding.trackerdto.users.request;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import ru.srfholding.trackermodels.user_service.constant.UserStatus;
+import ru.srfholding.userdetails.constant.UserStatus;
 
 import static lombok.AccessLevel.PRIVATE;
 

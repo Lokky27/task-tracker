@@ -1,6 +1,7 @@
 package ru.holding.srf.ptmsmigrations;
 
 import jakarta.persistence.*;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,15 +9,25 @@ import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
 import java.util.*;
 
 import static java.lang.String.format;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+
+@Slf4j
 @DisplayName("Проверка соответствия сущностей и схемы БД")
 public class EntitySchemaConsistencyTest extends AbstractMigrationsTest {
-    private static final String ENTITY_PACKAGE = "ru.srfholding.trackermodels";
+    private static final String ENTITY_MODULE_NAME = "ru.srfholding.trackermodels";
+    private static final String[] ENTITY_PACKAGES = {
+            "ru.srfholding.trackermodels.user_service.model",
+            "ru.srfholding.trackermodels.task_service.model",
+            "ru.srfholding.trackermodels.project_service.model",
+    };
 
     @BeforeAll
     public static void setupMigrations() throws Exception {
@@ -29,26 +40,91 @@ public class EntitySchemaConsistencyTest extends AbstractMigrationsTest {
     public void shouldHaveTablesForAllEntities() throws Exception {
         Set<Class<?>> entityClasses = findAllEntitiesClasses();
 
-        assertFalse(entityClasses.isEmpty(), "Должны быть найдены Entity классы в пакете: " + ENTITY_PACKAGE);
+        assertFalse(entityClasses.isEmpty(),
+                "Должны быть найдены Entity классы в модуле " + ENTITY_MODULE_NAME);
 
-        System.out.printf("\n=== Найдено классов Entity: %d ===", entityClasses.size());
+        log.info("Найдено классов Entity: {}", entityClasses.size());
         for (Class<?> entityClass : entityClasses) {
             String schemaName = getSchemaName(entityClass);
             String tableName = getTableName(entityClass);
 
-            System.out.printf("Проверка: %s -> %s.%s", entityClass.getSimpleName(), schemaName, tableName);
+            log.info("Проверка: {} -> {}.{}", entityClass.getSimpleName(), schemaName, tableName);
 
             assertTrue(tableExists(schemaName, tableName),
                     format("Таблица %s.%s для Entity %s должна существовать в БД", schemaName, tableName, entityClass.getSimpleName()));
         }
     }
 
+    @Test
+    @DisplayName("Все поля Entity должны иметь соотвтетсвующие колонки")
+    public void shouldHaveColumnsForAllEntityFields() throws Exception {
+        Set<Class<?>> entityClasses = findAllEntitiesClasses();
+        DatabaseMetaData metaData = connection.getMetaData();
+        for (Class<?> entityClass : entityClasses) {
+            String schemaName = getSchemaName(entityClass);
+            String tableName = getTableName(entityClass);
+            Set<String> dbColumns = new HashSet<>();
+            ResultSet columns = metaData.getColumns(null, schemaName, tableName, null);
+            while (columns.next()) {
+                dbColumns.add(columns.getString("COLUMN_NAME").toLowerCase());
+            }
+
+            if (dbColumns.isEmpty()) {
+                log.info("Таблица: {}.{} не найдена или не имеет колонок!",schemaName, tableName);
+                continue;
+            }
+
+            for (Field field : getAllFields(entityClass)) {
+                if (shouldCheckField(field)) {
+                    if (field.isAnnotationPresent(EmbeddedId.class)) {
+                        Class<?> embeddedIdClass = field.getType();
+                        log.info("Найден составной первичный ключ: {}", embeddedIdClass.getSimpleName());
+                        for (Field embeddedIdField : embeddedIdClass.getDeclaredFields()) {
+                            if (shouldCheckField(embeddedIdField)) {
+                                String columnName = getColumnName(embeddedIdField).toLowerCase();
+                                assertTrue(dbColumns.contains(columnName),
+                                        format("Колонка %s для поля %s из Составного первичного ключа Entity %s должна существовать в таблице %s.%s",
+                                                columnName, embeddedIdField.getName(), entityClass.getSimpleName(), schemaName, tableName));
+
+                            }
+                        }
+
+                        continue;
+                    }
+
+                    if (field.isAnnotationPresent(Embedded.class)) {
+                        Class<?> embeddedClass = field.getType();
+                        log.info("Найден составной первичный ключ: {}", embeddedClass.getSimpleName());
+                        for (Field embeddedIdField : embeddedClass.getDeclaredFields()) {
+                            if (shouldCheckEmbeddedField(embeddedIdField)) {
+                                String columnName = getColumnName(embeddedIdField);
+                                assertTrue(dbColumns.contains(columnName),
+                                        format("Колонка %s для поля %s в Entity %s должна существовать в таблице %s.%s",
+                                                columnName, embeddedIdField.getName(), entityClass.getSimpleName(), schemaName, tableName));
+                            }
+                        }
+
+                        continue;
+                    }
+                    String columnName = getColumnName(field);
+                    assertTrue(dbColumns.contains(columnName),
+                            format("Колонка: %s для поля: %s в Entity: %s должна существовать в таблице %s.%s", columnName, field.getName(), entityClass.getSimpleName(), schemaName, tableName));
+                }
+            }
+        }
+    }
+
     private Set<Class<?>> findAllEntitiesClasses() {
         try {
-            Reflections reflections = new Reflections(ENTITY_PACKAGE, Scanners.TypesAnnotated);
-            return reflections.getTypesAnnotatedWith(Entity.class);
+            Set<Class<?>> classes = new HashSet<>();
+            for (String packageName : ENTITY_PACKAGES) {
+                Reflections reflections = new Reflections(packageName, Scanners.TypesAnnotated);
+                classes.addAll(reflections.getTypesAnnotatedWith(Entity.class));
+            }
+
+            return classes;
         } catch (Exception e) {
-            System.err.println("Не удалось найти Entity классы причина: " + e.getMessage());
+            log.error("Не удалось найти Entity классы причина: {}", e.getMessage(), e);
             return Collections.emptySet();
         }
     }
@@ -99,6 +175,18 @@ public class EntitySchemaConsistencyTest extends AbstractMigrationsTest {
 
         return true;
     }
+    private boolean shouldCheckEmbeddedField(Field embeddedIdField) {
+        if (embeddedIdField.isAnnotationPresent(Transient.class)) {
+            return false;
+        }
+
+        if (Modifier.isStatic(embeddedIdField.getModifiers())) {
+            return false;
+        }
+
+        return true;
+    }
+
 
     private Field findIdField(Class<?> entityClass) {
 

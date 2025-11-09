@@ -5,9 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import ru.srfholding.trackermodels.task_service.constant.TaskPriorityType;
-import ru.srfholding.trackermodels.task_service.constant.TaskStatusType;
-import ru.srfholding.trackermodels.task_service.constant.TaskType;
+import ru.srfholding.task.constant.TaskPriorityType;
+import ru.srfholding.task.constant.TaskStatusType;
+import ru.srfholding.task.constant.TaskType;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;

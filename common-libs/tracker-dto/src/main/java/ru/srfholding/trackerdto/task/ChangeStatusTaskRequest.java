@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import ru.srfholding.trackermodels.task_service.constant.TaskStatusType;
+import ru.srfholding.task.constant.TaskStatusType;
 
 import static lombok.AccessLevel.PRIVATE;
 
